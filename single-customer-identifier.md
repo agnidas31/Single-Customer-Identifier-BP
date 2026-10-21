@@ -4,7 +4,7 @@ Field-Tested Innovation · Fuel & Convenience Retail · bp
 
 How linking three transaction datasets that were never designed to talk to each other (till receipts, loyalty swipes and card payments) turned millions of anonymous forecourt transactions into a single, measurable view of the customer.
 
-Agnivesh Das · Senior Data Analytics Engineer · bp · 2022–2024
+Agnivesh Das · Senior Data Analyst, Dataworx AI · BP
 
 ---
 
@@ -12,7 +12,7 @@ Agnivesh Das · Senior Data Analytics Engineer · bp · 2022–2024
 
 ### End to end: from raw source data to the matching model
 
-As Senior Data Analytics Engineer on SCI, I owned the path from raw data to a linked customer view:
+As Senior Data Analyst on SCI, I owned the path from raw data to a linked customer view:
 
 - **Sourcing.** Brought in raw EPOS, Loyalty and Payment data from each of the source systems.
 - **Cleaning and modelling.** Cleaned and standardised that data into a common data model so the three sources could be compared like for like, market by market.
@@ -142,8 +142,8 @@ SCI started as a UK proof of concept in 2022. It was engineered to grow:
 **3 → 1**
 Three disconnected transaction datasets joined into a single customer view.
 
-**[~90%]**
-Of in-scope UK transactions successfully linked. *[Confirm OK to publish]*
+**38%**
+Increase in fuel-to-store conversion, as cross-shopping insights from the unified view powered targeted promotions.
 
 **3 markets**
 UK, Germany and Poland running on the same layered model.

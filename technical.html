@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the Matching Works: From Raw Transactions to a Single Customer View · Agnivesh Das</title>
+<meta name="description" content="A walkthrough of the models behind SCI: how three disconnected datasets are cleaned, paired, scored, linked and finally rolled up into customer-level insight.">
+<meta property="og:title" content="How the Matching Works: From Raw Transactions to a Single Customer View · Agnivesh Das">
+<meta property="og:description" content="A walkthrough of the models behind SCI: how three disconnected datasets are cleaned, paired, scored, linked and finally rolled up into customer-level insight.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #17202b; --muted: #556070; --faint: #8a94a2; --rule: #dde3ea;
+    --bg: #ffffff; --bg-soft: #f4f7f9; --accent: #0e5a63; --accent-soft: #e8f2f3;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 17px; line-height: 1.7;
+  }
+  a { color: var(--accent); }
+  .top { border-bottom: 1px solid var(--rule); background: #fff; position: sticky; top: 0; z-index: 5; }
+  .top .wrap { display: flex; justify-content: space-between; align-items: center; height: 56px; gap: 12px; }
+  .top a { text-decoration: none; font-weight: 600; font-size: 14px; }
+  .brand { font-family: "Lora", Georgia, serif; font-size: 18px; color: var(--ink); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+  .tabs { display: flex; gap: 8px; margin: 28px 0 0; flex-wrap: wrap; }
+  .tabs a { padding: 6px 14px; border-radius: 99px; border: 1px solid var(--rule); color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; }
+  .tabs a.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  article { padding: 18px 0 60px; }
+  article > p:first-child { color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: 1.1px; text-transform: uppercase; margin-bottom: 0; }
+  h1 { font-family: "Lora", Georgia, serif; font-size: clamp(32px, 5vw, 46px); line-height: 1.12; margin: 8px 0 16px; }
+  h1 + p { font-size: 20px; color: var(--ink); }
+  h2 { font-family: "Lora", Georgia, serif; font-size: 28px; margin: 48px 0 6px; padding-top: 10px; }
+  h3 { font-size: 19px; margin: 10px 0 14px; color: var(--muted); font-weight: 600; }
+  h4 { font-size: 17px; margin: 22px 0 6px; }
+  p, li { color: #2b3542; }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 8px; }
+  blockquote {
+    margin: 22px 0; padding: 14px 18px; background: var(--accent-soft); border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+  }
+  blockquote p { margin: 6px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15px; display: block; overflow-x: auto; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { background: var(--bg-soft); font-weight: 600; white-space: nowrap; }
+  code { font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 14px; background: var(--bg-soft); padding: 2px 5px; border-radius: 4px; }
+  pre { background: #0f1a22; color: #e6edf3; padding: 16px 18px; border-radius: 10px; overflow-x: auto; font-size: 14px; line-height: 1.55; }
+  pre code { background: none; padding: 0; color: inherit; }
+  .foot { border-top: 1px solid var(--rule); padding: 26px 0 40px; color: var(--faint); font-size: 14px; }
+  .foot .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <a class="brand" href="https://agnidas31.github.io/Agnivesh-Das/">Agnivesh Das</a>
+    <a href="https://agnidas31.github.io/Agnivesh-Das/#work">← All work</a>
+  </div>
+</div>
+<div class="wrap">
+  
+  <div class="tabs">
+    <a href="index.html" class="">The story</a>
+    <a href="technical.html" class="on">Technical deep dive</a>
+  </div>
+  
+  <article><p>Technical Deep Dive · Single Customer Identifier (SCI) · bp</p>
+<h1>How the Matching Works: From Raw Transactions to a Single Customer View</h1>
+<p>A walkthrough of the models behind SCI: how three disconnected datasets are cleaned, paired, scored, linked and finally rolled up into customer-level insight.</p>
+<p>Agnivesh Das · Senior Data Analyst · bp</p>
+<blockquote>
+<p><strong>Note:</strong> this describes the approach and the model logic. All parameters, transactions and figures in the examples are illustrative, not production values.</p>
+</blockquote>
+<hr />
+<h2>The Pipeline at a Glance</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Model / technique</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Standardise</td>
+<td>Rule-based cleaning into a common data model</td>
+<td>Clean EPOS, Loyalty and Payment transactions</td>
+</tr>
+<tr>
+<td>2. Generate candidates</td>
+<td>Blocking + tolerance windows</td>
+<td>Feasible record pairs</td>
+</tr>
+<tr>
+<td>3. Score</td>
+<td>Multi-field similarity (cosine)</td>
+<td>Similarity score per pair, 0–1</td>
+</tr>
+<tr>
+<td>4. Penalise ambiguity</td>
+<td>Dampening factor</td>
+<td>Confidence score per pair, 0–1</td>
+</tr>
+<tr>
+<td>5. Assign</td>
+<td>Best-match selection with a confidence threshold</td>
+<td>One accepted link per transaction</td>
+</tr>
+<tr>
+<td>6. Triangulate</td>
+<td>Three-way reconciliation across dataset pairs</td>
+<td>One linked transaction record</td>
+</tr>
+<tr>
+<td>7. Resolve identity</td>
+<td>Token ↔ account linking across transactions</td>
+<td>Customer-level identifiers</td>
+</tr>
+<tr>
+<td>8. Enrich</td>
+<td>Fleet co-transaction models</td>
+<td>Fleet-linked convenience spend</td>
+</tr>
+<tr>
+<td>9. Aggregate &amp; segment</td>
+<td>KPI aggregation + rule-based segmentation</td>
+<td>Customer profiles and metrics</td>
+</tr>
+<tr>
+<td>10. Validate</td>
+<td>Scope, coverage, confidence, accuracy</td>
+<td>Trust in every number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Stage 1: Standardise the Sources</h2>
+<p>Before anything can be matched, the three datasets have to describe a purchase in the same way.</p>
+<ul>
+<li><strong>EPOS (till):</strong> basket items, quantities, sale value, site, timestamp.</li>
+<li><strong>Loyalty:</strong> account ID, sale value, quantity, site, timestamp. Only sales and refund events are kept.</li>
+<li><strong>Payment:</strong> tokenised card, card type, sale value, site, timestamp.</li>
+</ul>
+<p>Key cleaning rules:</p>
+<ul>
+<li><strong>Common keys and units.</strong> Align site codes, country, dates and currency so the same purchase looks the same in every source.</li>
+<li><strong>Basket type.</strong> Classify each transaction as <em>fuel</em>, <em>shop</em> or <em>fuel + shop</em>, so a fuel-only payment is never matched to a shop-only receipt.</li>
+<li><strong>Exclusions.</strong> Remove transaction types that should never be linked to a person, such as tokens tied to non-customer or partner-scheme transactions.</li>
+<li><strong>Timestamp quirks.</strong> Record known clock issues per market (for example, till timestamps with no seconds) so later stages can widen or shift their time windows.</li>
+</ul>
+<hr />
+<h2>Stage 2: Generate Candidate Pairs (Blocking)</h2>
+<p>Comparing every transaction with every other one is impossible at this scale. SCI uses <strong>blocking</strong>: only records that share hard attributes are ever compared.</p>
+<p><strong>Hard blocking keys (must match exactly):</strong>
+- Site
+- Date
+- Country
+- Basket type and card type (for Payment ↔ Loyalty)</p>
+<p><strong>Soft tolerances (must fall within a window):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Tolerance (illustrative)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time difference</td>
+<td>From exact, up to about 1–3 minutes depending on the dataset pair and market</td>
+</tr>
+<tr>
+<td>Sale value</td>
+<td>Exact match, or within a small range</td>
+</tr>
+<tr>
+<td>Quantity</td>
+<td>Exact match, or within a small range</td>
+</tr>
+</tbody>
+</table>
+<p>The tolerances are tuned per dataset pair and per market. For example, in a market where till timestamps lack seconds, the window extends <em>before</em> the till time as well as after it.</p>
+<p>Every pair that survives blocking and tolerances is a <strong>feasible match</strong>. Matching is run separately for each dataset pair:</p>
+<ul>
+<li>EPOS ↔ Payment (cash transactions are out of scope)</li>
+<li>EPOS ↔ Loyalty</li>
+<li>Payment ↔ Loyalty</li>
+</ul>
+<hr />
+<h2>Stage 3: Score Each Pair (Similarity Model)</h2>
+<p>Each feasible pair gets a <strong>similarity score</strong> between 0 and 1.</p>
+<ol>
+<li>For each thresholded field (time, value, quantity), measure how far apart the two records are <strong>relative to that field's tolerance</strong>: zero difference scores as fully close, and a difference at the edge of the tolerance scores as least close.</li>
+<li>Combine the fields into a vector and compute the <strong>cosine similarity</strong> of the pair against a perfect match.</li>
+</ol>
+<p>The result:
+- <strong>1.0</strong> = an exact match on every field (same time, same value, same quantity).
+- <strong>0.0</strong> = a match that sits at the limit of every tolerance.</p>
+<p>Because every field is normalised by its own tolerance, a 30-second gap and a 5p value difference can be compared on the same scale.</p>
+<hr />
+<h2>Stage 4: Penalise Ambiguity (Confidence Model)</h2>
+<p>High similarity alone isn't enough. At a busy site, several transactions can look almost identical. SCI turns similarity into <strong>confidence</strong> by penalising matches that have competition:</p>
+<pre><code>dampening factor = similarity ÷ (sum of similarities of all feasible matches)
+confidence       = similarity × dampening factor
+</code></pre>
+<ul>
+<li>A pair with <strong>no competing candidates</strong> keeps its full similarity as confidence.</li>
+<li>A pair with <strong>close competitors</strong> has its confidence reduced in proportion to how strong those competitors are.</li>
+</ul>
+<p>This is the key design choice of SCI: because there is no labelled ground truth, the model has to measure its own certainty.</p>
+<hr />
+<h2>Stage 5: Assign the Best Match</h2>
+<p>For each transaction, SCI:</p>
+<ol>
+<li>Ranks its feasible matches by confidence.</li>
+<li>Keeps the highest-confidence match.</li>
+<li>Accepts it only if it clears the <strong>confidence threshold</strong>.</li>
+</ol>
+<p><strong>Choosing the threshold.</strong> Plotting the confidence distribution against coverage showed that most matches cluster at very high confidence. A threshold around <strong>0.7</strong> kept almost all achievable coverage while discarding the ambiguous tail.</p>
+<h3>Worked example</h3>
+<p>Two payments (P1, P2) and three till transactions (E1, E2, E3) at the same site, in the same few minutes:</p>
+<table>
+<thead>
+<tr>
+<th>Pair</th>
+<th>Similarity</th>
+<th>Competitors</th>
+<th>Confidence</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E1–P1</td>
+<td>0.85</td>
+<td>None</td>
+<td>0.85</td>
+<td>✅ Accepted</td>
+</tr>
+<tr>
+<td>E2–P2</td>
+<td>0.94</td>
+<td>E3</td>
+<td>0.61 = 0.94 × 0.94 / (0.94 + 0.52)</td>
+<td>⚠️ Best for P2, below 0.7</td>
+</tr>
+<tr>
+<td>E3–P2</td>
+<td>0.52</td>
+<td>E2</td>
+<td>0.19 = 0.52 × 0.52 / (0.94 + 0.52)</td>
+<td>❌ Rejected</td>
+</tr>
+</tbody>
+</table>
+<p>E2–P2 is clearly the better candidate for P2, but the model flags that it isn't <em>sure</em>. Whether it is kept depends on the threshold the business is willing to accept.</p>
+<hr />
+<h2>Stage 6: Triangulate Across All Three Datasets</h2>
+<p>The three pairwise models each produce their own links. The final step joins them into a single transaction record:</p>
+<pre><code>EPOS basket ──(E↔P)── Payment token
+     │                     │
+   (E↔L)                 (P↔L)
+     │                     │
+     └──── Loyalty account ┘
+</code></pre>
+<ul>
+<li>The <strong>EPOS basket</strong> is the anchor: it holds <em>what</em> was bought.</li>
+<li>The <strong>payment token</strong> and the <strong>loyalty account ID</strong> are attached to it from the accepted pairwise links.</li>
+<li>Where all three links agree, the record is very strong. Where only two exist, the third can be inferred. Where links conflict, the higher-confidence path wins.</li>
+</ul>
+<p>The output is one row per purchase, carrying the basket, the card token and (if present) the loyalty account, along with the confidence of each link.</p>
+<hr />
+<h2>Stage 7: Resolve Identity (From Transactions to Customers)</h2>
+<p>A linked transaction is still just one purchase. The customer emerges when links repeat over time.</p>
+<ul>
+<li><strong>Token ↔ account links.</strong> If the same card token appears with the same loyalty account across many transactions, that card can be attributed to that loyalty customer, <em>even on visits where they didn't swipe their loyalty card</em>.</li>
+<li><strong>Card-only customers.</strong> Tokens that never link to a loyalty account still form a customer record of their own, keyed by card.</li>
+<li><strong>Token dampening.</strong> One person can pay with several cards, so a count of tokens overstates the number of people. A <strong>card-token dampening factor</strong> estimates how many tokens correspond to one customer, so token counts can be converted into customer counts.</li>
+</ul>
+<hr />
+<h2>Stage 8: Enrich With Fleet Models</h2>
+<p>Fleet (business) fuel cards behave differently: a driver often pays for fuel on a fleet card and then buys a coffee or snack on a personal card or in cash.</p>
+<p>Two models capture this:</p>
+<ul>
+<li><strong>Fleet → card convenience:</strong> finds convenience payments made within a short time window and in sequential order after a fleet fuel transaction.</li>
+<li><strong>Fleet → cash convenience:</strong> finds unmatched cash till transactions that follow a fleet transaction in the same window.</li>
+</ul>
+<p>This reveals convenience spend that is driven by fleet customers but would otherwise be invisible.</p>
+<hr />
+<h2>Stage 9: Aggregate and Segment</h2>
+<p>Linked transactions are rolled up to customer level (loyalty account or card token) and segmented.</p>
+<p><strong>Loyalty engagement (illustrative definitions):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Engaged</td>
+<td>Loyalty members who regularly swipe their card</td>
+</tr>
+<tr>
+<td>Semi-engaged</td>
+<td>Loyalty members whose card payments are linked, but who often don't swipe</td>
+</tr>
+<tr>
+<td>Unengaged</td>
+<td>Card-only customers with no loyalty link</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Other cuts:</strong>
+- Loyalty vs. non-loyalty
+- Fleet vs. non-fleet
+- Active vs. inactive
+- Fuel only, shop only, or fuel + shop</p>
+<p><strong>Outputs (Metrics layer):</strong>
+- <strong>Base KPIs:</strong> customers, transactions and spend per segment.
+- <strong>Top-down view:</strong> customers, transactions, spend, margin and revenue by fuel, shop and both.
+- <strong>Margin pareto:</strong> customers ranked by their share of total margin, split by loyalty/non-loyalty and fleet/non-fleet. This shows which small group of customers drives most of the value.</p>
+<hr />
+<h2>Stage 10: Validate</h2>
+<p>Every number SCI produces comes with measures of how far it can be trusted.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Question it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scope</strong></td>
+<td>What share of transactions <em>could</em> be matched for this dataset pair? (For example, cash is out of scope for payment matching.)</td>
+</tr>
+<tr>
+<td><strong>Coverage</strong></td>
+<td>Of the in-scope transactions, what share <em>were</em> matched?</td>
+</tr>
+<tr>
+<td><strong>Confidence</strong></td>
+<td>How certain is each accepted match, and how is confidence distributed?</td>
+</tr>
+<tr>
+<td><strong>Accuracy</strong> (proposed)</td>
+<td>Against a manually validated, randomly sampled set of known matches, how often is SCI right?</td>
+</tr>
+</tbody>
+</table>
+<p>Separating <strong>scope</strong> from <strong>coverage</strong> means the model is never blamed for transactions it could never match.</p>
+<hr />
+<h2>End-to-End Example (Illustrative)</h2>
+<p>A customer buys fuel and a coffee at Site 0421 at 08:14.</p>
+<ol>
+<li><strong>Standardise:</strong> the till records a £48.20 fuel + shop basket; the payment system records £48.20 on a Visa token; the loyalty system records £48.20 against account A-7731.</li>
+<li><strong>Candidates:</strong> same site, same date, same basket type, all within the time window.</li>
+<li><strong>Score:</strong> EPOS ↔ Payment similarity 0.97; EPOS ↔ Loyalty 0.93; Payment ↔ Loyalty 0.95.</li>
+<li><strong>Confidence:</strong> no competing candidates within the window, so confidence equals similarity.</li>
+<li><strong>Assign:</strong> all three links clear the 0.7 threshold.</li>
+<li><strong>Triangulate:</strong> one record: basket + Visa token + account A-7731.</li>
+<li><strong>Identity:</strong> the same Visa token appears in 11 other transactions this quarter, only 4 of which had a loyalty swipe. All 12 are now attributed to A-7731.</li>
+<li><strong>Segment:</strong> A-7731 is classed as <em>semi-engaged</em>: a loyalty member whose real spend is three times what the loyalty data alone showed.</li>
+</ol>
+<hr />
+<h2>Possible Extensions</h2>
+<p>The current model is deliberately transparent and rule-driven. Natural next steps:</p>
+<ul>
+<li><strong>Labelled accuracy set:</strong> a manually verified sample of matches to measure accuracy directly.</li>
+<li><strong>Optimal one-to-one assignment:</strong> using an assignment algorithm (for example, Hungarian matching) per site and time block so no record is claimed by two matches.</li>
+<li><strong>Probabilistic record linkage:</strong> weighting each field by how informative it is (Fellegi–Sunter style) instead of treating fields equally.</li>
+<li><strong>Supervised scoring:</strong> once a labelled set exists, training a classifier to predict match probability directly.</li>
+<li><strong>Graph-based identity resolution:</strong> treating tokens and accounts as nodes in a graph and clustering them into households or multi-card customers.</li>
+</ul>
+<hr />
+<p>Created by Agnivesh Das · bp Customer &amp; Product Data · All examples and parameters illustrative.</p></article>
+</div>
+<div class="foot">
+  <div class="wrap">
+    <span>Agnivesh Das · <a href="https://agnidas31.github.io/Agnivesh-Das/">Portfolio</a> · <a href="https://www.linkedin.com/in/agnivesh-das/">LinkedIn</a></span>
+    <span>Illustrative figures; confidential details omitted.</span>
+  </div>
+</div>
+</body>
+</html>

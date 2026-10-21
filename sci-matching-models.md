@@ -4,7 +4,7 @@ Technical Deep Dive · Single Customer Identifier (SCI) · bp
 
 A walkthrough of the models behind SCI: how three disconnected datasets are cleaned, paired, scored, linked and finally rolled up into customer-level insight.
 
-Agnivesh Das · Senior Data Analytics Engineer · bp
+Agnivesh Das · Senior Data Analyst · bp
 
 > **Note:** this describes the approach and the model logic. All parameters, transactions and figures in the examples are illustrative, not production values.
 
