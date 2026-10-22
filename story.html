@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Single Customer Identifier (SCI) · Agnivesh Das</title>
+<meta name="description" content="How linking three transaction datasets that were never designed to talk to each other (till receipts, loyalty swipes and card payments) turned millions of anonymous forecourt transactions into a single, measurable view of the customer.">
+<meta property="og:title" content="The Single Customer Identifier (SCI) · Agnivesh Das">
+<meta property="og:description" content="How linking three transaction datasets that were never designed to talk to each other (till receipts, loyalty swipes and card payments) turned millions of anonymous forecourt transactions into a single, measurable view of the customer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #17202b; --muted: #556070; --faint: #8a94a2; --rule: #dde3ea;
+    --bg: #ffffff; --bg-soft: #f7f8fa; --accent: #b4541a; --accent-soft: #fbede3; --navy: #172340;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 17px; line-height: 1.7;
+  }
+  a { color: var(--accent); }
+  .top { border-bottom: 1px solid var(--rule); background: #fff; position: sticky; top: 0; z-index: 5; }
+  .top .wrap { display: flex; justify-content: space-between; align-items: center; height: 56px; gap: 12px; }
+  .top a { text-decoration: none; font-weight: 600; font-size: 14px; }
+  .brand { font-family: "Source Serif 4", Georgia, serif; font-size: 18px; color: var(--ink); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+  .tabs { display: flex; gap: 8px; margin: 28px 0 0; flex-wrap: wrap; }
+  .tabs a { padding: 6px 14px; border-radius: 99px; border: 1px solid var(--rule); color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; }
+  .tabs a.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+  article { padding: 18px 0 60px; }
+  article > p:first-child { color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: 1.1px; text-transform: uppercase; margin-bottom: 0; }
+  h1 { color: var(--navy); font-family: "Source Serif 4", Georgia, serif; font-size: clamp(32px, 5vw, 46px); line-height: 1.12; margin: 8px 0 16px; }
+  h1 + p { font-size: 20px; color: var(--ink); }
+  h2 { color: var(--navy); font-family: "Source Serif 4", Georgia, serif; font-size: 28px; margin: 48px 0 6px; padding-top: 10px; }
+  h3 { font-size: 19px; margin: 10px 0 14px; color: var(--muted); font-weight: 600; }
+  h4 { font-size: 17px; margin: 22px 0 6px; }
+  p, li { color: #2b3542; }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 8px; }
+  blockquote {
+    margin: 22px 0; padding: 14px 18px; background: var(--accent-soft); border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+  }
+  blockquote p { margin: 6px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 15px; display: block; overflow-x: auto; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { background: var(--bg-soft); font-weight: 600; white-space: nowrap; }
+  code { font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 14px; background: var(--bg-soft); padding: 2px 5px; border-radius: 4px; }
+  pre { background: #0f1a22; color: #e6edf3; padding: 16px 18px; border-radius: 10px; overflow-x: auto; font-size: 14px; line-height: 1.55; }
+  pre code { background: none; padding: 0; color: inherit; }
+  .foot { border-top: 1px solid var(--rule); padding: 26px 0 40px; color: var(--faint); font-size: 14px; }
+  .foot .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <a class="brand" href="https://agnidas31.github.io/Agnivesh-Das/">Agnivesh Das</a>
+    <a href="https://agnidas31.github.io/Agnivesh-Das/#work">← All work</a>
+  </div>
+</div>
+<div class="wrap">
+  <div class="tabs">
+    <a href="index.html">At a glance</a>
+    <a href="story.html" class="on">The story</a>
+    <a href="technical.html" class="">Technical deep dive</a>
+  </div>
+  <article><p>Case Study · Fuel &amp; Convenience Retail · bp</p>
+<h1>The Single Customer Identifier (SCI)</h1>
+<p>How linking three transaction datasets that were never designed to talk to each other (till receipts, loyalty swipes and card payments) turned millions of anonymous forecourt transactions into a single, measurable view of the customer.</p>
+<p>Agnivesh Das · Senior Data Analyst, Dataworx AI · BP</p>
+<hr />
+<h2>My Role</h2>
+<h3>End to end: from raw source data to the matching model</h3>
+<p>As Senior Data Analyst on SCI, I owned the path from raw data to a linked customer view:</p>
+<ul>
+<li><strong>Sourcing.</strong> Brought in raw EPOS, Loyalty and Payment data from each of the source systems.</li>
+<li><strong>Cleaning and modelling.</strong> Cleaned and standardised that data into a common data model so the three sources could be compared like for like, market by market.</li>
+<li><strong>Matching.</strong> Built the statistical models that find approximate matches between records across the three datasets, creating the links that join a basket, a card and a loyalty account into one picture of the customer.</li>
+</ul>
+<hr />
+<h2>The Problem</h2>
+<h3>Three records of the same purchase, and no way to connect them</h3>
+<p>A single purchase at a bp forecourt can create up to three separate records, each in a different system:</p>
+<ul>
+<li><strong>EPOS</strong> (the till) knows <em>what</em> was bought: the basket, items, quantities and value.</li>
+<li><strong>Loyalty</strong> knows <em>who</em> bought it, but only if the customer swiped a loyalty card.</li>
+<li><strong>Payment</strong> knows <em>how</em> it was paid for, through a tokenised card.</li>
+</ul>
+<p>None of these systems shared a common key. The business could see a basket, <em>or</em> a loyalty member, <em>or</em> a card, but never the customer behind all three.</p>
+<p>That left the most basic commercial questions without a reliable answer. How many customers do we actually have? How many are engaged with loyalty, and how many shop with us regularly but never swipe? Which customers drive our margin? Loyalty data covered only a fraction of spend, and everything outside it was effectively invisible.</p>
+<hr />
+<h2>The Constraint Nobody Was Naming</h2>
+<h3>There was no ground truth to learn from</h3>
+<p>Linking the datasets was not a simple join. It was an <strong>unsupervised matching problem</strong>: there was no labelled list of "this till receipt is definitely this card payment" to train or test against. Any approach had to answer three questions at once:</p>
+<p><strong>1. Which records are actually the same purchase?</strong> Clocks across systems didn't agree. In one market the till timestamps were missing seconds entirely, and payment timestamps had known accuracy issues. Values and quantities could differ slightly between systems.</p>
+<p><strong>2. How sure are we about each match?</strong> At a busy site, several transactions of a similar value can happen within the same minute. Picking the closest one isn't enough if two or three others were almost as close.</p>
+<p><strong>3. Which transactions can be matched at all?</strong> A cash purchase will never appear in payment data. Counting it as "unmatched" makes the model look worse than it is, so the in-scope population had to be defined for every pair of datasets.</p>
+<p>The business didn't need a stricter join. It needed a matching model that could say how confident it was in every link it made.</p>
+<hr />
+<h2>The Fix</h2>
+<h3>Probabilistic linking, a confidence score, and a layered data product</h3>
+<p>SCI links EPOS, Loyalty and Payment transactions through a scored, tolerance-based matching model, then rolls the linked transactions up into customer-level KPIs. Three tunable controls sit at the heart of it:</p>
+<p><strong>X: Match Window</strong>
+The time tolerance between two records (from exact match up to a few minutes, depending on the market and the dataset pair) within which they can be considered the same purchase.</p>
+<p><strong>Y: Value &amp; Quantity Tolerance</strong>
+How closely the sale value and item quantity must agree, either an exact match or a small range, to remain a feasible candidate.</p>
+<p><strong>Z: Confidence Threshold</strong>
+The minimum confidence a link must reach before it is accepted, balancing match quality against coverage.</p>
+<h3>How it works</h3>
+<ol>
+<li><strong>Refine:</strong> Clean EPOS, Loyalty and Payment source data into one common data model, per market.</li>
+<li><strong>Block:</strong> Generate candidate pairs only within the same site, date and country, and also basket type (fuel / shop / both) and card type where relevant.</li>
+<li><strong>Score:</strong> Calculate the similarity of each candidate pair (cosine similarity across the thresholded fields), on a scale from 0 (at the edge of every tolerance) to 1 (an exact match).</li>
+<li><strong>Dampen:</strong> Penalise matches that have competing alternatives: each similarity is scaled by its share of the total similarity of all feasible candidates.</li>
+<li><strong>Link:</strong> Keep the best match above the confidence threshold, then chain EPOS–Payment–Loyalty into a single transaction record carrying both the payment token and the loyalty account ID.</li>
+<li><strong>Measure:</strong> Aggregate linked transactions into customer KPIs: loyalty vs. non-loyalty, engaged / semi-engaged / unengaged, fleet vs. non-fleet, and margin contribution. Coverage and confidence are reported alongside every result.</li>
+</ol>
+<p><strong>Confidence = Similarity × Dampening Factor</strong>
+<strong>Dampening Factor = Similarity ÷ Sum of similarities of all feasible matches</strong></p>
+<p>Every link is therefore self-explanatory: which records were joined, how close they were, and how much competition that match had. A high-confidence link means "very close, and nothing else came near."</p>
+<hr />
+<h2>Worked Example</h2>
+<h3>What the confidence score actually does</h3>
+<p>Below is the shape of how SCI resolves a match between till (EPOS) and payment records.</p>
+<blockquote>
+<p><strong>Note:</strong> the method shown reflects how the model actually worked. The transactions and scores are illustrative, not real production data.</p>
+</blockquote>
+<p><strong>Scenario:</strong> two card payments (P1 and P2) and three till transactions (E1, E2 and E3) at the same site, within the same few minutes.</p>
+<table>
+<thead>
+<tr>
+<th>Pair</th>
+<th>Similarity</th>
+<th>Feasible alternatives</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E1–P1</td>
+<td>0.85</td>
+<td>None</td>
+<td><strong>0.85</strong></td>
+</tr>
+<tr>
+<td>E2–P2</td>
+<td>0.94</td>
+<td>E3</td>
+<td><strong>0.61</strong> = 0.94 × 0.94 / (0.94 + 0.52)</td>
+</tr>
+<tr>
+<td>E3–P2</td>
+<td>0.52</td>
+<td>E2</td>
+<td><strong>0.19</strong> = 0.52 × 0.52 / (0.94 + 0.52)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>E1–P1</strong> isn't a perfect match (the timestamps differ slightly), but nothing else competes for it, so confidence stays high.</li>
+<li><strong>E2–P2</strong> is the closest match for P2, but E3 is also a plausible candidate, so SCI deliberately lowers its confidence. A raw "best match" approach would have treated it as certain.</li>
+<li><strong>E3–P2</strong> is rejected.</li>
+</ul>
+<p><strong>The trade-off:</strong> a higher confidence threshold gives cleaner links but fewer of them. Plotting coverage against threshold showed that most matches clustered at very high confidence, so a threshold around 0.7 retained almost all achievable coverage while filtering out ambiguous links.</p>
+<hr />
+<h2>Built to Scale</h2>
+<h3>From a UK proof of concept to a multi-market data product</h3>
+<p>SCI started as a UK proof of concept in 2022. It was engineered to grow:</p>
+<ul>
+<li><strong>Four layers, each smaller than the last.</strong> Refine → Integrate → Aggregate → Metrics. Data volume falls at each step, so downstream queries get cheaper and faster, and the early layers load incrementally.</li>
+<li><strong>Traffic-light change rules.</strong> Experiments are free (green), the Refine layer follows the rules where possible (amber), and the Integrate, Aggregate and Metrics layers must follow strict modelling rules (red): no duplicated fields in fact tables, no dimension tables that already exist elsewhere.</li>
+<li><strong>Market-specific tuning.</strong> Match windows and tolerances were adapted to each market's data quality, for example by checking <em>before</em> the till time in a market where till timestamps lacked seconds.</li>
+<li><strong>A development framework.</strong> In 2024 the team moved SCI from <em>model development</em> (frequent model changes) to <em>model refinement</em> (frequent data refreshes, fewer model changes), with batch deployments, code-review acceptance criteria and a clear onboarding path.</li>
+</ul>
+<hr />
+<h2>Why This Beat The Old Approach</h2>
+<h3>Same data, fundamentally different view of the customer</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Before SCI</th>
+<th>With SCI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>View of the customer</td>
+<td>Loyalty members only</td>
+<td>Loyalty and non-loyalty customers, linked by card token</td>
+</tr>
+<tr>
+<td>Linking EPOS, Loyalty, Payment</td>
+<td>Not possible: no common key</td>
+<td>Probabilistic linking across all three</td>
+</tr>
+<tr>
+<td>Trust in a match</td>
+<td>n/a</td>
+<td>Every link carries a 0–1 confidence score</td>
+</tr>
+<tr>
+<td>Measuring the gaps</td>
+<td>Unmatched transactions looked like failures</td>
+<td>Scope vs. coverage separates "unmatchable" from "missed"</td>
+</tr>
+<tr>
+<td>Customer segmentation</td>
+<td>Loyalty engagement only</td>
+<td>Engaged / semi-engaged / unengaged, fleet, margin pareto</td>
+</tr>
+<tr>
+<td>Rolling out to a new market</td>
+<td>Rebuild from scratch</td>
+<td>Same layered model, tuned per market</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Impact</h2>
+<h3>What changed</h3>
+<p><strong>3 → 1</strong>
+Three disconnected transaction datasets joined into a single customer view.</p>
+<p><strong>38%</strong>
+Increase in fuel-to-store conversion, as cross-shopping insights from the unified view powered targeted promotions.</p>
+<p><strong>3 markets</strong>
+UK, Germany and Poland running on the same layered model.</p>
+<p><strong>Single source of truth</strong>
+From 2023, bp's Customer Lifetime Value (CLV) model consumed SCI as its single source of customer truth.</p>
+<p>The bigger shift wasn't just joining three tables. It was turning "we know our loyalty members" into "we know our customers, including the ones who never swipe a card, and we know how confident we are in every link." That gave pricing, marketing and loyalty teams a customer base they could size, segment and value, instead of a fraction of it.</p>
+<hr />
+<p>Created by Agnivesh Das · bp Customer &amp; Product Data · Illustrative example: transactions and scores fictionalised. EPOS = electronic point of sale (till) data.</p></article>
+</div>
+<div class="foot">
+  <div class="wrap">
+    <span>Agnivesh Das · <a href="https://agnidas31.github.io/Agnivesh-Das/">Portfolio</a> · <a href="https://www.linkedin.com/in/agnivesh-das/">LinkedIn</a></span>
+    <span>Illustrative figures; confidential details omitted.</span>
+  </div>
+</div>
+</body>
+</html>
