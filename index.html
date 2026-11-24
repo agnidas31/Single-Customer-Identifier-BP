@@ -3,106 +3,111 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Single Customer Identifier · Agnivesh Das</title>
-<meta name="description" content="Three transaction systems that never shared a key, linked into one confidence-scored view of every customer, including the ones who never swipe a loyalty card.">
-<meta property="og:title" content="Single Customer Identifier · Agnivesh Das">
-<meta property="og:description" content="Three transaction systems that never shared a key, linked into one confidence-scored view of every customer, including the ones who never swipe a loyalty card.">
+<title>From Loyalty Members to Every Customer · Agnivesh Das</title>
+<meta name="description" content="Every purchase on a bp forecourt left three separate records behind: a till receipt, a card payment and, sometimes, a loyalty swipe. None of them shared a key, so the business could count baskets, cards or members, but never customers. The Single Customer Identifier linked all three into one view, and said how confident it was in every link.">
+<meta property="og:title" content="From Loyalty Members to Every Customer · Agnivesh Das">
+<meta property="og:description" content="Every purchase on a bp forecourt left three separate records behind: a till receipt, a card payment and, sometimes, a loyalty swipe. None of them shared a key, so the business could count baskets, cards or members, but never customers. The Single Customer Identifier linked all three into one view, and said how confident it was in every link.">
 <meta name="theme-color" content="#0b0f14">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  /* Project-page identity: graphite + mint + amber. Deliberately distinct from the hub's navy/copper. */
   :root {
-    --night: #0b0f14; --night-2: #121821; --night-line: rgba(255,255,255,.1);
-    --paper: #f5f3ee; --card: #ffffff; --ink: #141a21; --muted: #5c6570; --faint: #8d959f; --rule: #e2dfd6;
-    --mint: #5eead4; --em: #00866b; --em-ink: #006b56; --amber: #c97a00; --amber-hi: #ffb547; --violet: #5b4fd6;
+    --night: #0b0f14; --night-line: rgba(255,255,255,.1);
+    --paper: #f7f6f2; --card: #ffffff; --ink: #141a21; --text: #2c343d; --muted: #5c6570; --faint: #8d959f; --rule: #e2dfd6;
+    --mint: #5eead4; --em: #00866b; --em-ink: #006b56; --amber: #c97a00; --amber-hi: #ffb547;
     --ok: #1d7a4f; --warn: #a15c00; --no: #a8322d;
     --display: "Space Grotesk", "Manrope", system-ui, sans-serif;
     --body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
     --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-    --radius: 16px; --max: 1180px;
+    --col: 760px; --wide: 920px;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
   html, body { overflow-x: hidden; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.62 var(--body); -webkit-font-smoothing: antialiased; }
+  body { margin: 0; background: var(--paper); color: var(--text); font: 17.5px/1.72 var(--body); -webkit-font-smoothing: antialiased; }
   a { color: var(--em); }
   ::selection { background: var(--mint); color: var(--night); }
-  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
-  h1, h2, h3 { font-family: var(--display); letter-spacing: -.02em; }
-  .mono { font-family: var(--mono); }
+  h1, h2, h3 { font-family: var(--display); letter-spacing: -.02em; color: var(--ink); }
+  .column { max-width: var(--col); margin: 0 auto; padding: 0 22px; }
+  .widecol { max-width: var(--wide); margin: 0 auto; padding: 0 22px; }
 
-  /* ---------- nav ---------- */
   #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; z-index: 40; background: linear-gradient(90deg, var(--mint), var(--amber-hi)); }
-  .nav { position: sticky; top: 0; z-index: 30; background: rgba(11,15,20,.78); backdrop-filter: saturate(140%) blur(14px); -webkit-backdrop-filter: saturate(140%) blur(14px); border-bottom: 1px solid var(--night-line); }
-  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
-  .brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font: 600 15px var(--display); white-space: nowrap; }
-  .brand i { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; font: 700 12px var(--mono); font-style: normal; color: var(--night); background: linear-gradient(135deg, var(--mint), #a7f3d0); }
-  .nav ul { list-style: none; display: flex; gap: 4px; margin: 0; padding: 0; align-items: center; }
-  .nav ul a { color: #a9b3bd; text-decoration: none; font: 500 12.5px var(--mono); letter-spacing: .3px; padding: 6px 10px; border-radius: 8px; transition: color .2s, background .2s; }
-  .nav ul a:hover, .nav ul a.on { color: #fff; background: rgba(255,255,255,.07); }
-  .nav ul a.on { color: var(--mint); }
-  .nav .back { border: 1px solid rgba(94,234,212,.4); color: var(--mint) !important; }
+  .top { position: absolute; top: 0; left: 0; right: 0; z-index: 5; }
+  .top .widecol { display: flex; justify-content: space-between; align-items: center; height: 64px; }
+  .top a { color: #a9b3bd; text-decoration: none; font: 500 13px var(--mono); }
+  .top a:hover { color: var(--mint); }
+  .top .brand { color: #fff; font: 600 15px var(--display); display: flex; gap: 10px; align-items: center; }
+  .top .brand i { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font: 700 11px var(--mono); font-style: normal; color: var(--night); background: linear-gradient(135deg, var(--mint), #a7f3d0); }
 
-  /* ---------- hero ---------- */
-  .hero { position: relative; background: var(--night); color: #fff; overflow: hidden; isolation: isolate; }
+  /* opening */
+  .hero { position: relative; background: var(--night); color: #fff; overflow: hidden; isolation: isolate; padding: 130px 0 70px; }
   .hero::before { content: ""; position: absolute; inset: 0; z-index: -2;
-    background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
-    background-size: 44px 44px; mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, #000 30%, transparent 75%); }
-  .hero::after { content: ""; position: absolute; inset: -20% -10% auto auto; width: 70%; height: 120%; z-index: -1;
-    background: radial-gradient(closest-side, rgba(94,234,212,.20), transparent), radial-gradient(closest-side at 20% 80%, rgba(255,181,71,.12), transparent); filter: blur(10px); }
-  .hero .wrap { display: grid; grid-template-columns: 1.08fr .92fr; gap: 40px; align-items: center; padding-top: 70px; padding-bottom: 40px; }
-  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 600 12px var(--mono); letter-spacing: 1.2px; text-transform: uppercase; color: var(--mint); padding: 6px 12px; border: 1px solid rgba(94,234,212,.28); border-radius: 99px; background: rgba(94,234,212,.06); }
-  .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 4px rgba(94,234,212,.18); animation: blink 2.4s infinite; }
-  .hero h1 { font-size: clamp(42px, 6.4vw, 76px); line-height: .98; margin: 22px 0 18px; font-weight: 700;
-    background: linear-gradient(180deg, #fff 30%, #b9c7c4); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .hook { font-size: clamp(17px, 1.9vw, 20px); color: #c4ccd3; margin: 0 0 24px; max-width: 600px; }
-  .byline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 14px; color: #93a0aa; }
+    background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 44px 44px; -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 30%, #000 25%, transparent 75%); mask-image: radial-gradient(ellipse 70% 80% at 50% 30%, #000 25%, transparent 75%); }
+  .hero::after { content: ""; position: absolute; top: -30%; left: 30%; width: 70%; height: 120%; z-index: -1; background: radial-gradient(closest-side, rgba(94,234,212,.16), transparent); }
+  .eyebrow { font: 600 12px var(--mono); letter-spacing: 1.3px; text-transform: uppercase; color: var(--mint); }
+  .hero h1 { color: #fff; font-size: clamp(38px, 6vw, 64px); line-height: 1.02; margin: 16px 0 22px; font-weight: 700; }
+  .intro { font-size: clamp(18px, 2vw, 21px); line-height: 1.6; color: #c9d1d8; margin: 0 0 26px; }
+  .byline { font-size: 14.5px; color: #93a0aa; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
   .byline b { color: #fff; font-weight: 600; }
   .byline .sep { width: 4px; height: 4px; border-radius: 50%; background: #4a5560; }
-  .stack { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
-  .stack span { font: 500 12px var(--mono); color: #cfd6dc; background: rgba(255,255,255,.05); border: 1px solid var(--night-line); padding: 4px 10px; border-radius: 6px; }
-  .art-frame { position: relative; border: 1px solid var(--night-line); border-radius: 22px; background: linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); padding: 10px; }
-  .art-frame::before, .art-frame::after { content: ""; position: absolute; width: 18px; height: 18px; border: 2px solid var(--mint); }
-  .art-frame::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; border-radius: 22px 0 0 0; }
-  .art-frame::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; border-radius: 0 0 22px 0; }
-  .art-frame .cap { position: absolute; top: 14px; right: 16px; font: 600 10.5px var(--mono); letter-spacing: 1px; color: #6f7d88; text-transform: uppercase; }
-  .art { display: block; width: 100%; height: auto; }
-  .results { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--night-line); border-radius: var(--radius); background: rgba(255,255,255,.025); margin-top: 18px; }
-  .results div { padding: 20px 24px; position: relative; }
-  .results div + div { border-left: 1px solid var(--night-line); }
-  .results b { display: block; font: 700 clamp(34px, 4vw, 46px)/1 var(--display); letter-spacing: -.03em; background: linear-gradient(90deg, var(--mint), #c4fff4); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .results span { display: block; color: #a9b3bd; font-size: 14px; margin-top: 8px; }
-  .results-note { grid-column: 1 / -1; font: 500 11.5px var(--mono); color: #66737e; letter-spacing: .3px; margin-top: -24px; }
+  .note { margin-top: 34px; border: 1px solid rgba(255,181,71,.35); background: rgba(255,181,71,.07); border-radius: 12px; padding: 14px 18px; font-size: 14.5px; line-height: 1.6; color: #e6dccb; }
+  .note b { color: var(--amber-hi); font: 600 12px var(--mono); letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 4px; }
 
-  .ticker { background: var(--amber-hi); color: #2b1a00; overflow: hidden; white-space: nowrap; font: 600 12px var(--mono); letter-spacing: .8px; text-transform: uppercase; }
-  .ticker div { display: inline-block; padding: 9px 0; animation: marquee 38s linear infinite; }
-  .ticker span { margin: 0 22px; }
-  .ticker span::before { content: "◆"; margin-right: 22px; opacity: .55; }
+  /* the project */
+  main { padding: 80px 0 30px; }
+  .label { font: 600 12px var(--mono); letter-spacing: 1.3px; text-transform: uppercase; color: var(--em); margin: 0 0 10px; display: flex; align-items: center; gap: 10px; }
+  .label::after { content: ""; width: 40px; height: 1px; background: currentColor; opacity: .5; }
+  h2 { font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; margin: 0 0 18px; }
+  .lede { font-size: 19px; color: var(--ink); }
+  h3 { font-size: clamp(22px, 2.6vw, 27px); line-height: 1.2; margin: 64px 0 12px; padding-top: 26px; border-top: 1px solid var(--rule); position: relative; }
+  h3::before { content: attr(data-n); position: absolute; top: -11px; left: 0; background: var(--paper); padding-right: 10px; font: 600 12px var(--mono); color: var(--amber); letter-spacing: 1px; }
+  p { margin: 0 0 18px; }
+  em { color: var(--ink); font-style: normal; font-weight: 600; }
+  figure { margin: 26px 0 26px; }
+  .fig { background: var(--card); border: 1px solid var(--rule); border-radius: 16px; padding: 22px 24px 20px; box-shadow: 0 14px 36px -24px rgba(20,26,33,.25); }
+  figcaption { display: flex; flex-direction: column; gap: 4px; margin-bottom: 18px; }
+  figcaption b { font: 600 17px var(--display); color: var(--ink); letter-spacing: -.01em; }
+  figcaption > span { font: 500 12px var(--mono); color: var(--faint); }
+  .fig .ill { display: inline-block; vertical-align: 3px; margin-left: 6px; font: 600 10.5px var(--mono); letter-spacing: 1px; text-transform: uppercase; color: var(--amber); background: #fff4e2; border-radius: 5px; padding: 2px 7px; margin-top: 4px; }
+  .callouts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0; }
+  .callout { border-left: 3px solid var(--em); background: #eef5f2; border-radius: 0 12px 12px 0; padding: 16px 18px; font-size: 15.5px; line-height: 1.6; }
+  .callout b { display: block; font: 600 16px var(--display); color: var(--ink); margin-bottom: 6px; }
 
-  /* ---------- sections ---------- */
-  section { padding: 96px 0; position: relative; }
-  .sec-head { display: grid; grid-template-columns: auto 1fr; gap: 0 28px; align-items: end; margin-bottom: 40px; }
-  .num { font: 700 clamp(72px, 10vw, 128px)/.8 var(--display); color: transparent; -webkit-text-stroke: 1.5px #c9c4b6; letter-spacing: -.05em; grid-row: span 3; align-self: start; }
-  .kicker { font: 600 12px var(--mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--em); margin: 0 0 10px; display: flex; align-items: center; gap: 10px; }
-  .kicker::after { content: ""; width: 48px; height: 1px; background: currentColor; opacity: .5; }
-  h2 { font-size: clamp(28px, 3.8vw, 44px); line-height: 1.06; margin: 0 0 12px; font-weight: 700; color: var(--ink); }
-  .sub { color: var(--muted); margin: 0; max-width: 720px; font-size: 17px; }
-  .card { background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 24px; box-shadow: 0 1px 0 rgba(20,26,33,.02), 0 12px 32px -18px rgba(20,26,33,.18); }
-  .card h3 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
-  .card .csub { color: var(--muted); font-size: 13.5px; margin: 0 0 18px; }
-  .fig { font: 600 11px var(--mono); letter-spacing: 1.2px; text-transform: uppercase; color: var(--faint); margin: 0 0 16px; display: flex; justify-content: space-between; gap: 12px; }
-  .fig em { font-style: normal; color: var(--amber); }
+  /* results + why */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 22px 0 0; }
+  .tile { background: var(--card); border: 1px solid var(--rule); border-radius: 14px; padding: 20px 18px; }
+  .tile b { display: block; font: 700 clamp(30px, 3.4vw, 40px)/1 var(--display); letter-spacing: -.03em; color: var(--em); }
+  .tile span { display: block; font-size: 14px; line-height: 1.45; color: var(--muted); margin-top: 10px; }
+  .results { margin-top: 70px; }
+  .results .tiles .tile { border-top: 3px solid var(--em); }
+  .why { background: var(--night); color: #c9d1d8; padding: 80px 0; margin-top: 80px; }
+  .why .label { color: var(--mint); }
+  .why h2 { color: #fff; }
+  .why p:not(.label) { font-size: 18.5px; }
+  .why .tile { background: rgba(255,255,255,.03); border-color: var(--night-line); }
+  .why .tile b { color: var(--mint); }
+  .why .tile span { color: #93a0aa; }
 
-  /* 01 problem */
-  .prob { display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; align-items: start; }
-  .points { display: grid; gap: 12px; counter-reset: p; }
-  .point { position: relative; background: var(--card); border: 1px solid var(--rule); border-radius: 14px; padding: 18px 18px 18px 64px; transition: transform .25s, box-shadow .25s, border-color .25s; }
-  .point:hover { transform: translateY(-2px); border-color: #d8b27a; box-shadow: 0 14px 30px -20px rgba(201,122,0,.6); }
-  .point::before { counter-increment: p; content: "0" counter(p); position: absolute; left: 18px; top: 18px; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 9px; background: #fff4e2; color: var(--amber); font: 700 12px var(--mono); }
-  .point b { display: block; font-family: var(--display); font-weight: 600; font-size: 16.5px; margin-bottom: 3px; }
-  .point p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .foot { background: var(--night); border-top: 1px solid var(--night-line); padding: 24px 0 34px; font: 500 12.5px var(--mono); color: #6f7d88; }
+  .foot .widecol { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+  .foot a { color: #a9b3bd; }
+
+  .formula { background: #f2f7f5; border: 1px solid #d3e6df; border-left: 4px solid var(--em); border-radius: 10px; padding: 14px 18px; font: 500 14.5px/1.7 var(--mono); color: #23302c; }
+  .formula b { color: var(--em-ink); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips span { background: #eef6f3; color: var(--em-ink); border: 1px solid #cfe5dd; padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .pair > * { min-width: 0; }
+  .pair h4 { margin: 0 0 10px; font: 600 11px var(--mono); letter-spacing: 1px; text-transform: uppercase; color: var(--faint); }
+  .bignum { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; }
+  .bignum .n { background: var(--night); color: #fff; border-radius: 14px; padding: 20px 24px; font: 700 56px/1 var(--display); letter-spacing: -.03em; }
+  .bignum .n small { display: block; font: 600 11px var(--mono); color: #8a96a1; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .bignum .n span { font-size: 20px; color: #9aa6b0; }
+  .bignum .n em { display: block; font: 600 13px var(--mono); color: var(--amber-hi); margin-top: 14px; }
+  .bignum ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+  .bignum li { border: 1px dashed #cfc9bb; border-radius: 9px; padding: 6px 12px; font-size: 14.5px; color: var(--muted); }
+  .bignum li:first-child { border: 0; padding: 0 0 2px; font: 600 17px var(--display); color: var(--ink); }
   .srcs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .src { border: 1px solid var(--rule); border-radius: 12px; padding: 14px; background: linear-gradient(180deg, #fbfaf7, #fff); position: relative; overflow: hidden; }
   .src::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: linear-gradient(90deg, var(--em), var(--mint)); }
@@ -114,38 +119,6 @@
   .src dd { margin: 0; font-size: 14px; }
   .nokey { margin-top: 12px; display: flex; align-items: center; gap: 12px; border: 1.5px dashed #e2b56f; border-radius: 12px; padding: 11px 14px; color: #7a4a00; font-weight: 600; font-size: 14.5px; background: repeating-linear-gradient(-45deg, #fffaf1 0 8px, #fff5e4 8px 16px); }
   .nokey span { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--amber); color: #fff; font-size: 12px; flex: none; }
-  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .pair h4 { margin: 0 0 10px; font: 600 11px var(--mono); letter-spacing: 1px; text-transform: uppercase; color: var(--faint); }
-  .onenum { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .onenum .big { background: var(--night); color: #fff; border-radius: 14px; padding: 20px; font: 700 60px/1 var(--display); letter-spacing: -.03em; position: relative; overflow: hidden; }
-  .onenum .big::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,181,71,.35), transparent); }
-  .onenum .big small { display: block; font: 600 11px var(--mono); color: #8a96a1; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
-  .onenum .big span { font-size: 20px; color: #9aa6b0; }
-  .onenum .big em { display: block; font: 600 13.5px var(--mono); color: var(--amber-hi); margin-top: 16px; font-style: normal; }
-  .onenum .why { display: flex; flex-direction: column; gap: 7px; }
-  .onenum .why b { font-family: var(--display); font-size: 18px; }
-  .onenum .why span { border: 1px dashed #cfc9bb; border-radius: 9px; padding: 6px 12px; font-size: 14px; color: var(--muted); background: #fff; }
-
-  /* 02 approach: pipeline */
-  section.dark { background: var(--night); color: #fff; }
-  section.dark h2 { color: #fff; }
-  section.dark .sub { color: #a9b3bd; }
-  section.dark .num { -webkit-text-stroke-color: #2c3742; }
-  section.dark .kicker { color: var(--mint); }
-  .pipe { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 26px; }
-  .pipe::before { content: ""; position: absolute; left: 4%; right: 4%; top: 22px; height: 2px; background: linear-gradient(90deg, rgba(94,234,212,.15), var(--mint), rgba(255,181,71,.8)); }
-  .pipe::after { content: ""; position: absolute; top: 18px; left: 4%; width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px 4px rgba(94,234,212,.7); animation: travel 5s ease-in-out infinite; }
-  .stage { position: relative; padding-top: 58px; }
-  .stage .dot { position: absolute; top: 4px; left: 0; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: var(--night-2); border: 1px solid rgba(94,234,212,.45); color: var(--mint); font: 700 13px var(--mono); }
-  .stage b { display: block; font: 600 17px var(--display); margin-bottom: 6px; }
-  .stage p { margin: 0; color: #a3aeb8; font-size: 14px; line-height: 1.55; }
-  .extra { background: var(--card); color: var(--ink); border-radius: var(--radius); padding: 26px; border: 1px solid rgba(255,255,255,.08); }
-  .extra h3 { margin: 0 0 18px; font-size: 19px; }
-  .formula { background: #f2f7f5; border: 1px solid #d3e6df; border-left: 4px solid var(--em); border-radius: 10px; padding: 14px 18px; font: 500 14.5px var(--mono); margin-bottom: 16px; color: #23302c; }
-  .formula div { padding: 3px 0; }
-  .formula b { color: var(--em-ink); }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chips span { background: #eef6f3; color: var(--em-ink); border: 1px solid #cfe5dd; padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 600; }
   .tbl { overflow-x: auto; }
   .tbl table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
   .tbl th, .tbl td { text-align: left; padding: 10px; border-bottom: 1px solid var(--rule); }
@@ -153,41 +126,6 @@
   .tbl td:first-child { font-family: var(--mono); font-size: 13.5px; white-space: nowrap; }
   .st { font-weight: 700; font-size: 13px; white-space: nowrap; padding: 3px 9px; border-radius: 99px; }
   .st.ok { color: var(--ok); background: #e7f5ee; } .st.warn { color: var(--warn); background: #fff2dc; } .st.no { color: var(--no); background: #fbe9e8; }
-
-  /* 03 contribution */
-  .contrib { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .ccard { position: relative; background: var(--card); border: 1px solid var(--rule); border-radius: var(--radius); padding: 26px 24px 24px; overflow: hidden; transition: transform .3s, box-shadow .3s; }
-  .ccard:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -26px rgba(0,134,107,.55); }
-  .ccard::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: linear-gradient(90deg, var(--em), var(--mint), var(--amber-hi)); }
-  .ccard .idx { position: absolute; right: 18px; top: 16px; font: 700 40px/1 var(--display); color: #efebe1; letter-spacing: -.04em; z-index: 0; }
-  .ccard > * { position: relative; z-index: 1; }
-  .ccard .lab { font: 600 11px var(--mono); letter-spacing: 1.2px; text-transform: uppercase; color: var(--em); }
-  .ccard h3 { margin: 8px 0 10px; font-size: 21px; padding-right: 52px; }
-  .ccard p { color: var(--muted); font-size: 15px; margin: 0 0 18px; }
-  .ccard .chips span { font: 500 12px var(--mono); padding: 4px 9px; background: var(--paper); color: var(--ink); border-color: var(--rule); }
-
-  /* 04 output: dashboard mock */
-  section.grid-bg { background-color: #eceae3; background-image: radial-gradient(#d6d2c6 1px, transparent 1px); background-size: 22px 22px; }
-  .dash { display: grid; grid-template-columns: 210px 1fr; border-radius: 20px; overflow: hidden; background: var(--night); box-shadow: 0 40px 80px -40px rgba(11,15,20,.55), 0 0 0 1px rgba(11,15,20,.1); }
-  .side { padding: 18px 14px; color: #9aa6b0; font-size: 13.5px; border-right: 1px solid var(--night-line); }
-  .side .lights { display: flex; gap: 6px; margin-bottom: 22px; }
-  .side .lights i { width: 10px; height: 10px; border-radius: 50%; background: #2b3540; }
-  .side .lights i:first-child { background: #ff6b5e; } .side .lights i:nth-child(2) { background: #ffbd2e; } .side .lights i:nth-child(3) { background: #28c840; }
-  .side .app { color: #fff; font: 600 14px var(--display); margin-bottom: 18px; display: flex; gap: 8px; align-items: center; }
-  .side .app::before { content: ""; width: 18px; height: 18px; border-radius: 5px; background: linear-gradient(135deg, var(--mint), var(--violet)); }
-  .side a { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; color: inherit; text-decoration: none; margin-bottom: 2px; line-height: 1.3; }
-  .side a::before { content: ""; width: 6px; height: 6px; border-radius: 2px; background: #3a4652; flex: none; }
-  .side a.on { background: rgba(94,234,212,.1); color: #fff; } .side a.on::before { background: var(--mint); }
-  .side .foot-note { margin-top: 24px; font: 500 11px var(--mono); color: #5f6c77; line-height: 1.6; }
-  .main { background: #f3f2ee; min-width: 0; }
-  .topbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--rule); background: #fff; }
-  .topbar .t { font: 600 15px var(--display); margin-right: auto; }
-  .pill { font: 500 12px var(--mono); border: 1px solid var(--rule); border-radius: 8px; padding: 5px 10px; color: var(--muted); background: var(--paper); }
-  .pill.live { color: #7a4a00; background: #fff2dc; border-color: #f2d29f; }
-  .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 16px; }
-  .panels .card { padding: 20px; border-radius: 14px; box-shadow: none; }
-  .panels .wide { grid-column: 1 / -1; }
-  .panels > *, .prob > *, .pair > *, .onenum > * { min-width: 0; }
 
   /* charts */
   .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12.5px; color: var(--muted); margin: 0 0 12px; }
@@ -257,100 +195,32 @@
   .js .anim .col:nth-child(5) i, .js .anim .wf-c:nth-child(5) i, .js .anim .hb-row:nth-child(5) i { transition-delay: .28s; }
   .js .anim .col:nth-child(6) i, .js .anim .wf-c:nth-child(6) i, .js .anim .hb-row:nth-child(6) i { transition-delay: .35s; }
   .js .anim .col:nth-child(n+7) i, .js .anim .wf-c:nth-child(n+7) i, .js .anim .hb-row:nth-child(n+7) i { transition-delay: .42s; }
-  .js [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
-  .js [data-reveal].in { opacity: 1; transform: none; }
+  .src { background: #fbfaf7; }
+  /* entrance motion for charts */
+  .js .anim .hb-t i, .js .anim .db-t i { transform: scaleX(0); transition: transform .9s cubic-bezier(.2,.8,.2,1); }
+  .js .anim .col i, .js .anim .wf-c i { transform: scaleY(0); transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+  .js .anim .plot svg { clip-path: inset(0 100% 0 0); transition: clip-path 1.4s cubic-bezier(.4,.1,.2,1); }
+  .js .anim .dot { opacity: 0; transition: opacity .4s .9s; }
+  .js .anim.in .hb-t i, .js .anim.in .db-t i, .js .anim.in .col i, .js .anim.in .wf-c i { transform: none; }
+  .js .anim.in .plot svg { clip-path: inset(0 0 0 0); }
+  .js .anim.in .dot { opacity: 1; }
+  .js .anim .col:nth-child(2) i, .js .anim .hb-row:nth-child(2) i { transition-delay: .08s; }
+  .js .anim .col:nth-child(3) i, .js .anim .hb-row:nth-child(3) i { transition-delay: .16s; }
+  .js .anim .col:nth-child(4) i, .js .anim .hb-row:nth-child(4) i { transition-delay: .24s; }
+  .js .anim .col:nth-child(5) i { transition-delay: .32s; }
+  .js .fade-up { opacity: 0; transform: translateY(14px); transition: opacity .7s, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .js .fade-up.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } .js .fade-up { opacity: 1; transform: none; } }
 
-  /* 05 impact */
-  .impact { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--night-line); border: 1px solid var(--night-line); border-radius: var(--radius); overflow: hidden; }
-  .icard { background: var(--night); padding: 26px 22px; position: relative; }
-  .icard::before { content: ""; position: absolute; left: 22px; top: 0; width: 34px; height: 3px; background: var(--mint); border-radius: 0 0 3px 3px; }
-  .icard .m { font: 700 clamp(34px, 3.6vw, 46px)/1 var(--display); letter-spacing: -.03em; background: linear-gradient(90deg, var(--mint), #d5fff7); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .icard .l { font: 600 15.5px var(--display); margin-top: 10px; color: #fff; }
-  .icard .d { color: #9aa6b0; font-size: 14px; margin-top: 8px; line-height: 1.55; }
-  .ba { margin-top: 28px; display: grid; gap: 10px; }
-  .ba-row { display: grid; grid-template-columns: 1fr 1.25fr 40px 1.45fr; gap: 14px; align-items: center; padding: 14px 18px; border-radius: 12px; background: rgba(255,255,255,.03); border: 1px solid var(--night-line); font-size: 15px; transition: background .25s, border-color .25s; }
-  .ba-row:hover { background: rgba(94,234,212,.05); border-color: rgba(94,234,212,.25); }
-  .ba-row.head { background: none; border: 0; padding-top: 0; padding-bottom: 0; font: 600 11px var(--mono); letter-spacing: 1.2px; text-transform: uppercase; color: #66737e; }
-  .ba-row .k { font: 600 15px var(--display); color: #fff; }
-  .ba-row .b { color: #7f8b95; text-decoration: line-through; text-decoration-color: rgba(255,255,255,.25); }
-  .ba-row .ar { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,181,71,.12); color: var(--amber-hi); font-weight: 700; }
-  .ba-row .a { color: #e6eef0; font-weight: 500; }
-  .closing { margin: 44px 0 0; font: 600 clamp(22px, 3vw, 34px)/1.25 var(--display); letter-spacing: -.02em; color: #fff; max-width: 900px; }
-  .closing::before { content: "“"; display: block; font-size: 80px; line-height: .6; color: var(--mint); margin-bottom: 8px; }
-
-  /* CTA + footer */
-  .more { background: linear-gradient(120deg, #0e3b33, #0b0f14 55%, #2a1c05); color: #fff; }
-  .more .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 22px; padding-top: 56px; padding-bottom: 56px; }
-  .more h2 { color: #fff; margin: 0; font-size: clamp(26px, 3vw, 34px); }
-  .more p { margin: 6px 0 0; color: #a9b3bd; }
-  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 10px; font-weight: 700; font-size: 15px; text-decoration: none; border: 1px solid rgba(255,255,255,.25); color: #fff; transition: transform .2s, background .2s; }
-  .btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.06); }
-  .btn.primary { background: var(--mint); border-color: var(--mint); color: var(--night); }
-  .btn.primary:hover { background: #8ff2e2; }
-  .foot { background: var(--night); border-top: 1px solid var(--night-line); padding: 22px 0 30px; color: #6f7d88; font: 500 12px var(--mono); }
-  .foot a { color: #a9b3bd; }
-  .foot .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-
-  /* hero-art + misc animation */
-  .art .flow { stroke-dasharray: 3 11; animation: flow 1.4s linear infinite; }
-  .art .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2s cubic-bezier(.4,.1,.2,1) forwards; }
-  .art .pulse { transform-box: fill-box; transform-origin: center; animation: pulse 2.6s ease-out infinite; }
-  .art .rise { transform-box: fill-box; transform-origin: bottom; animation: rise .9s cubic-bezier(.2,.8,.2,1) both; }
-  .art .fade { opacity: 0; animation: fade .7s ease forwards; }
-  .art .scan { animation: scan 5s ease-in-out infinite alternate; }
-  @keyframes flow { to { stroke-dashoffset: -28; } }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-  @keyframes pulse { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(1.6); opacity: 0; } }
-  @keyframes rise { from { transform: scaleY(0); } }
-  @keyframes fade { to { opacity: 1; } }
-  @keyframes scan { from { transform: translateY(0); } to { transform: translateY(260px); } }
-  @keyframes blink { 50% { box-shadow: 0 0 0 7px rgba(94,234,212,0); } }
-  @keyframes marquee { to { transform: translateX(-50%); } }
-  @keyframes travel { 0% { left: 4%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: 95%; opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .art .draw { stroke-dashoffset: 0; } .art .fade { opacity: 1; }
-    .js [data-reveal] { opacity: 1; transform: none; }
-  }
-
-  /* responsive */
-  @media (max-width: 1000px) {
-    .hero .wrap { grid-template-columns: 1fr; padding-top: 48px; }
-    .art-frame { max-width: 560px; }
-    .pipe { grid-template-columns: repeat(3, 1fr); row-gap: 28px; }
-    .pipe::before, .pipe::after { display: none; }
-    .stage { padding: 0 0 0 54px; min-height: 40px; }
-    .stage .dot { top: 0; }
-    .impact { grid-template-columns: repeat(2, 1fr); }
-    .prob { grid-template-columns: 1fr; }
-    .nav ul li.sec { display: none; }
-    .dash { grid-template-columns: 1fr; }
-    .side { display: none; }
-  }
   @media (max-width: 720px) {
-    section { padding: 64px 0; }
-    .wrap { padding: 0 16px; }
-    .sec-head { grid-template-columns: 1fr; }
-    .num { font-size: 64px; grid-row: auto; margin-bottom: 6px; }
-    .results { grid-template-columns: 1fr; }
-    .results div + div { border-left: 0; border-top: 1px solid var(--night-line); }
-    .results-note { margin-top: -28px; }
-    .contrib, .panels, .pair, .onenum, .srcs { grid-template-columns: 1fr; }
-    .pipe { grid-template-columns: 1fr 1fr; }
-    .panels { padding: 10px; gap: 10px; }
-    .panels .card { padding: 14px; }
-    .ba-row { grid-template-columns: 1fr; gap: 4px; }
-    .ba-row.head, .ba-row .ar { display: none; }
-    .ba-row .b::before { content: "Before · "; font: 600 11px var(--mono); text-decoration: none; display: inline-block; }
-    .ba-row .a::before { content: "After · "; color: var(--mint); font: 600 11px var(--mono); }
-    .nav ul li.cs { display: none; }
+    body { font-size: 16.5px; }
+    .hero { padding: 100px 0 54px; }
+    main { padding-top: 56px; }
+    .tiles { grid-template-columns: 1fr 1fr; }
+    .callouts, .srcs, .pair, .bignum { grid-template-columns: 1fr; }
+    .fig { padding: 16px; }
     .sx-in { min-width: calc(var(--n) * 74px); padding-bottom: 4px; }
-    .topbar .pill:not(.live) { display: none; }
-  }
-  @media (max-width: 440px) {
-    .impact, .pipe { grid-template-columns: 1fr; }
-    .hb-row, .db-row { grid-template-columns: 34% 1fr auto; gap: 8px; font-size: 13px; }
+    .top .back-full { display: none; }
   }
 </style>
 </head>
@@ -358,223 +228,143 @@
 <script>document.documentElement.classList.add('js');</script>
 <div id="progress"></div>
 <div id="tip" role="status"></div>
-<nav class="nav">
-  <div class="wrap">
-    <a class="brand" href="https://agnidas31.github.io/Agnivesh-Das/"><i>AD</i>Agnivesh Das</a>
-    <ul>
-      <li class="sec"><a href="#problem">01 Problem</a></li>
-      <li class="sec"><a href="#approach">02 Approach</a></li>
-      <li class="sec"><a href="#role">03 Role</a></li>
-      <li class="sec"><a href="#output">04 Output</a></li>
-      <li class="sec"><a href="#impact">05 Impact</a></li>
-      <li class="cs"><a href="story.html">Case study</a></li>
-      <li><a class="back" href="https://agnidas31.github.io/Agnivesh-Das/#work">← All work</a></li>
-    </ul>
-  </div>
-</nav>
+<div class="top"><div class="widecol">
+  <a class="brand" href="https://agnidas31.github.io/Agnivesh-Das/"><i>AD</i>Agnivesh Das</a>
+  <a href="https://agnidas31.github.io/Agnivesh-Das/#work">← <span class="back-full">All </span>work</a>
+</div></div>
 
 <header class="hero">
-  <div class="wrap">
-    <div>
-      <span class="eyebrow">BP · Fuel &amp; Convenience Retail · Customer data</span>
-      <h1>Single Customer Identifier</h1>
-      <p class="hook">Three transaction systems that never shared a key, linked into one confidence-scored view of every customer, including the ones who never swipe a loyalty card.</p>
-      <div class="byline"><b>Agnivesh Das</b><span class="sep"></span><span>Senior Data Analyst, Dataworx AI</span><span class="sep"></span><span>BP</span></div>
-      <div class="stack"><span>SQL</span><span>Python</span><span>Cosine similarity</span><span>Layered data model</span></div>
-    </div>
-    <div class="art-frame"><span class="cap">fig. 0 · illustrative</span><svg class="art" viewBox="0 0 460 360" role="img" aria-label="Three source systems linking into one customer record"><defs><radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#5eead4" stop-opacity=".45"/><stop offset="1" stop-color="#5eead4" stop-opacity="0"/></radialGradient><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5eead4" stop-opacity=".35"/><stop offset="1" stop-color="#5eead4" stop-opacity="0"/></linearGradient></defs><path d="M150 74 C 240 74, 240 180, 322 180" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/><path class="flow" d="M150 74 C 240 74, 240 180, 322 180" fill="none" stroke="#5eead4" stroke-width="2" style="animation-delay:0.0s"/><path d="M150 184 L 322 180" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/><path class="flow" d="M150 184 L 322 180" fill="none" stroke="#5eead4" stroke-width="2" style="animation-delay:0.4s"/><path d="M150 294 C 240 294, 240 180, 322 180" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/><path class="flow" d="M150 294 C 240 294, 240 180, 322 180" fill="none" stroke="#5eead4" stroke-width="2" style="animation-delay:0.8s"/><g class="fade" style="animation-delay:0.1s"><rect x="20" y="50" width="130" height="48" rx="12" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.14)"/><text x="34" y="71" fill="#e6f2ef" font-size="13" style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:600">EPOS</text><text x="34" y="88" fill="#8a9a96" font-size="11" style="font-family:'JetBrains Mono',ui-monospace,monospace">what was bought</text></g><g class="fade" style="animation-delay:0.25s"><rect x="20" y="160" width="130" height="48" rx="12" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.14)"/><text x="34" y="181" fill="#e6f2ef" font-size="13" style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:600">PAYMENT</text><text x="34" y="198" fill="#8a9a96" font-size="11" style="font-family:'JetBrains Mono',ui-monospace,monospace">how it was paid</text></g><g class="fade" style="animation-delay:0.4s"><rect x="20" y="270" width="130" height="48" rx="12" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.14)"/><text x="34" y="291" fill="#e6f2ef" font-size="13" style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:600">LOYALTY</text><text x="34" y="308" fill="#8a9a96" font-size="11" style="font-family:'JetBrains Mono',ui-monospace,monospace">who bought it</text></g><circle cx="372" cy="180" r="90" fill="url(#glow)"/><circle class="pulse" cx="372" cy="180" r="50" fill="none" stroke="#5eead4" stroke-width="1.5"/><circle cx="372" cy="180" r="50" fill="#0b0f14" stroke="#5eead4" stroke-width="2"/><text x="372" y="176" text-anchor="middle" fill="#e6f2ef" font-size="13" style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:700">ID·0001</text><text x="372" y="194" text-anchor="middle" fill="#8a9a96" font-size="10.5" style="font-family:'JetBrains Mono',ui-monospace,monospace">one customer</text><g class="fade" style="animation-delay:1.0s"><rect x="206" y="96" width="76" height="22" rx="11" fill="#0b0f14" stroke="#5eead4"/><text x="244" y="111" text-anchor="middle" fill="#5eead4" font-size="11.5" style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:600">conf 0.85</text></g><g class="fade" style="animation-delay:1.3s"><rect x="206" y="250" width="76" height="22" rx="11" fill="#0b0f14" stroke="#ffb547"/><text x="244" y="265" text-anchor="middle" fill="#ffb547" font-size="11.5" style="font-family:'JetBrains Mono',ui-monospace,monospace;font-weight:600">conf 0.61</text></g></svg></div>
-    <div class="results">
-      <div><b data-count>38%</b><span>increase in fuel-to-store conversion</span></div><div><b data-count>3 → 1</b><span>datasets in one customer view</span></div><div><b data-count>3</b><span>markets: UK, Germany, Poland</span></div>
-    </div>
-    <div class="results-note">↑ Headline results as reported. Everything below uses illustrative data.</div>
+  <div class="column">
+    <div class="eyebrow">BP · Single Customer Identifier · Customer data</div>
+    <h1>From Loyalty Members to Every Customer</h1>
+    <p class="intro">Every purchase on a bp forecourt left three separate records behind: a till receipt, a card payment and, sometimes, a loyalty swipe. None of them shared a key, so the business could count baskets, cards or members, but never customers. The Single Customer Identifier linked all three into one view, and said how confident it was in every link.</p>
+    <div class="byline"><b>Agnivesh Das</b><span class="sep"></span><span>Senior Data Analyst, Dataworx AI</span><span class="sep"></span><span>BP</span></div>
+    <div class="note"><b>A note on this write-up</b>All figures, charts and examples on this page are illustrative. Values, volumes and site details have been altered or replaced with fictitious numbers; no real BP data is shown. Only the headline results are reported outcomes.</div>
   </div>
 </header>
-<div class="ticker" aria-label="Illustrative data notice"><div><span>Illustrative data only</span><span>Fictitious numbers throughout</span><span>No real BP data shown</span><span>Illustrative data only</span><span>Fictitious numbers throughout</span><span>No real BP data shown</span><span>Illustrative data only</span><span>Fictitious numbers throughout</span><span>No real BP data shown</span><span>Illustrative data only</span><span>Fictitious numbers throughout</span><span>No real BP data shown</span><span>Illustrative data only</span><span>Fictitious numbers throughout</span><span>No real BP data shown</span><span>Illustrative data only</span><span>Fictitious numbers throughout</span><span>No real BP data shown</span></div></div>
 
-<section id="problem">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <div class="num">01</div>
-      <p class="kicker">The problem</p>
-      <h2>One purchase, three records, no way to connect them</h2>
-      <p class="sub">A single forecourt purchase could create a till record, a loyalty swipe and a card payment, each in a different system. The business could see a basket, a member or a card, but never the customer behind all three.</p>
-    </div>
-    <div class="prob">
-      <div class="card anim" data-reveal><p class="fig"><span>Fig. 1 · Where it started</span><em>illustrative</em></p><div class="srcs"><div class="src"><b>EPOS (till)</b><em>What was bought</em><dl><div><dt>Records / month</dt><dd>2.4M baskets</dd></div><div><dt>Knows</dt><dd>items, value, site</dd></div></dl></div><div class="src"><b>Loyalty</b><em>Who bought it</em><dl><div><dt>Records / month</dt><dd>0.7M swipes</dd></div><div><dt>Knows</dt><dd>member, points</dd></div></dl></div><div class="src"><b>Payment</b><em>How it was paid</em><dl><div><dt>Records / month</dt><dd>1.9M card payments</dd></div><div><dt>Knows</dt><dd>card token, amount</dd></div></dl></div></div><div class="nokey"><span>✕</span>No common key between any of the three systems</div></div>
-      <div class="points">
-        <div class="point" data-reveal><b>Only a fraction was visible</b><p>Loyalty covered a minority of spend; every non-swiping customer was invisible.</p></div><div class="point" data-reveal><b>No ground truth</b><p>Matching was unsupervised: no labelled list of true matches to train or test against.</p></div><div class="point" data-reveal><b>Clocks disagreed</b><p>Timestamps and values drifted between systems; busy sites had near-identical baskets.</p></div>
-      </div>
-    </div>
+<main>
+  <div class="column">
+    <p class="label">The project</p>
+    <h2>One view of every forecourt customer</h2>
+    <p class="lede">The goal was simple to say and hard to do: take three transaction systems that were never designed to talk to each other, and join them into one record per customer, across the UK, Germany and Poland. I brought in the raw data, built the common data model, and wrote the matching models that make the links.</p>
+    
+    
+      <h3 data-n="01">The starting point: one purchase, three records</h3>
+      
+    
+      <p>A single visit could show up in the till system (<em>what</em> was bought), the payment system (<em>how</em> it was paid) and the loyalty system (<em>who</em> bought it, but only if they swiped). Each system had its own IDs, its own clocks and its own idea of a transaction.</p>
+      
+    
+      
+      <figure class="fig anim fade-up"><figcaption><div><b>Three systems, three partial views</b> <span class="ill">Illustrative</span></div><span>Illustrative monthly volumes for one market</span></figcaption><div class="srcs"><div class="src"><b>EPOS (till)</b><em>What was bought</em><dl><div><dt>Records / month</dt><dd>2.4M baskets</dd></div><div><dt>Knows</dt><dd>items, value, site</dd></div></dl></div><div class="src"><b>Payment</b><em>How it was paid</em><dl><div><dt>Records / month</dt><dd>1.9M card payments</dd></div><div><dt>Knows</dt><dd>card token, amount</dd></div></dl></div><div class="src"><b>Loyalty</b><em>Who bought it</em><dl><div><dt>Records / month</dt><dd>0.7M swipes</dd></div><div><dt>Knows</dt><dd>member, points</dd></div></dl></div></div><div class="nokey"><span>✕</span>No common key between any of the three systems</div></figure>
+      
+    
+      <p>Loyalty only ever covered a minority of spend. Everyone who paid by card but never swiped a loyalty card was, in effect, invisible.</p>
+      
+    
+      <h3 data-n="02">The method: narrow, score, link</h3>
+      
+    
+      <p>There was no list of known matches to train against, so this was an unsupervised problem. I narrowed the search first: a till record could only match a payment from the same site, date, country and basket type. Within that small window, I scored each candidate pair on how closely their time, value and quantity agreed, and kept the best one.</p>
+      
+    
+      
+      <figure class="fig anim fade-up"><figcaption><div><b>Link rate by dataset pair</b> <span class="ill">Illustrative</span></div><span>% of in-scope transactions linked</span></figcaption><div class="legend"><span><i style="background:#00866b"></i>Exact-key match</span><span><i style="background:#c97a00"></i>Confidence-scored match</span></div><div class="hb"><div class="hb-row"><span class="hb-l">EPOS ↔ Payment</span><span class="hb-t stack"><i style="width:58.00%;background:#00866b" data-tip="EPOS ↔ Payment, Exact-key match: 58%" tabindex="0"></i><i style="width:24.00%;background:#c97a00" data-tip="EPOS ↔ Payment, Confidence-scored match: 24%" tabindex="0"></i></span><span class="hb-v">82%</span></div><div class="hb-row"><span class="hb-l">EPOS ↔ Loyalty</span><span class="hb-t stack"><i style="width:71.00%;background:#00866b" data-tip="EPOS ↔ Loyalty, Exact-key match: 71%" tabindex="0"></i><i style="width:17.00%;background:#c97a00" data-tip="EPOS ↔ Loyalty, Confidence-scored match: 17%" tabindex="0"></i></span><span class="hb-v">88%</span></div><div class="hb-row"><span class="hb-l">Payment ↔ Loyalty</span><span class="hb-t stack"><i style="width:44.00%;background:#00866b" data-tip="Payment ↔ Loyalty, Exact-key match: 44%" tabindex="0"></i><i style="width:21.00%;background:#c97a00" data-tip="Payment ↔ Loyalty, Confidence-scored match: 21%" tabindex="0"></i></span><span class="hb-v">65%</span></div></div><details class="dt"><summary>View data</summary><table><thead><tr><th>Item</th><th>Exact-key match</th><th>Confidence-scored match</th><th>Total</th></tr></thead><tbody><tr><td>EPOS ↔ Payment</td><td>58%</td><td>24%</td><td>82%</td></tr><tr><td>EPOS ↔ Loyalty</td><td>71%</td><td>17%</td><td>88%</td></tr><tr><td>Payment ↔ Loyalty</td><td>44%</td><td>21%</td><td>65%</td></tr></tbody></table></details></figure>
+      
+    
+      <p>Exact keys did most of the work, but the scored matches added roughly a fifth more coverage on every pair. That's the slice a simple join would have thrown away.</p>
+      
+    
+      <h3 data-n="03">How sure is each match?</h3>
+      
+    
+      <p>At a busy site, two or three baskets of a similar value can land in the same minute. So every link carries a confidence score: the similarity of the pair, scaled down by how many other candidates were nearly as close. Only links above a threshold are kept.</p>
+      
+    
+      
+      <figure class="fig anim fade-up"><figcaption><div><b>Coverage at each confidence threshold</b> <span class="ill">Illustrative</span></div><span>% of in-scope transactions retained</span></figcaption><div class="lc" style="--h:240px"><div class="plot"><div class="gl" style="bottom:0.00%"><span>40%</span></div><div class="gl" style="bottom:20.00%"><span>50%</span></div><div class="gl" style="bottom:40.00%"><span>60%</span></div><div class="gl" style="bottom:60.00%"><span>70%</span></div><div class="gl" style="bottom:80.00%"><span>80%</span></div><div class="gl" style="bottom:100.00%"><span>90%</span></div><div class="vl" style="left:44.44%"><span>Chosen: 0.7</span></div><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="#00866b" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" points="0.00,11.80 11.11,12.40 22.22,13.00 33.33,14.00 44.44,15.60 55.56,19.20 66.67,27.00 77.78,39.40 88.89,58.00 100.00,91.60"/></svg><i class="dot" style="left:0.00%;bottom:88.20%;background:#00866b" data-tip="0.5: 84.1%" tabindex="0"></i><i class="dot" style="left:11.11%;bottom:87.60%;background:#00866b" data-tip="0.55: 83.8%" tabindex="0"></i><i class="dot" style="left:22.22%;bottom:87.00%;background:#00866b" data-tip="0.6: 83.5%" tabindex="0"></i><i class="dot" style="left:33.33%;bottom:86.00%;background:#00866b" data-tip="0.65: 83.0%" tabindex="0"></i><i class="dot" style="left:44.44%;bottom:84.40%;background:#00866b" data-tip="0.7: 82.2%" tabindex="0"></i><i class="dot" style="left:55.56%;bottom:80.80%;background:#00866b" data-tip="0.75: 80.4%" tabindex="0"></i><i class="dot" style="left:66.67%;bottom:73.00%;background:#00866b" data-tip="0.8: 76.5%" tabindex="0"></i><i class="dot" style="left:77.78%;bottom:60.60%;background:#00866b" data-tip="0.85: 70.3%" tabindex="0"></i><i class="dot" style="left:88.89%;bottom:42.00%;background:#00866b" data-tip="0.9: 61.0%" tabindex="0"></i><i class="dot" style="left:100.00%;bottom:8.40%;background:#00866b" data-tip="0.95: 44.2%" tabindex="0"></i><span class="xl" style="left:0.00%">0.5</span><span class="xl" style="left:22.22%">0.6</span><span class="xl" style="left:44.44%">0.7</span><span class="xl" style="left:66.67%">0.8</span><span class="xl" style="left:88.89%">0.9</span></div></div><details class="dt"><summary>View data</summary><table><thead><tr><th></th><th>Coverage</th></tr></thead><tbody><tr><td>0.5</td><td>84.1%</td></tr><tr><td>0.55</td><td>83.8%</td></tr><tr><td>0.6</td><td>83.5%</td></tr><tr><td>0.65</td><td>83.0%</td></tr><tr><td>0.7</td><td>82.2%</td></tr><tr><td>0.75</td><td>80.4%</td></tr><tr><td>0.8</td><td>76.5%</td></tr><tr><td>0.85</td><td>70.3%</td></tr><tr><td>0.9</td><td>61.0%</td></tr><tr><td>0.95</td><td>44.2%</td></tr></tbody></table></details></figure>
+      
+    
+      <p>Most real matches score very high, so coverage barely moves until the threshold passes 0.7, then falls away fast. That knee is where we set it: strict enough to trust, loose enough to keep almost everything worth keeping.</p>
+      
+    
+      <h3 data-n="04">When two baskets look the same</h3>
+      
+    
+      <p>The dampening step matters most in exactly the cases a join gets wrong. Here, two till records compete for the same card payment:</p>
+      
+    
+      
+      <figure class="fig anim fade-up"><figcaption><div><b>One payment, two candidate baskets</b> <span class="ill">Illustrative</span></div><span>Illustrative transactions</span></figcaption><div class="tbl"><table><thead><tr><th>Pair</th><th>Similarity</th><th>Competing with</th><th>Confidence</th><th>Decision</th></tr></thead><tbody><tr><td>E1 ↔ P1</td><td>0.85</td><td>none</td><td><b>0.85</b></td><td><span class="st ok">✓ Linked</span></td></tr><tr><td>E2 ↔ P2</td><td>0.94</td><td>E3</td><td><b>0.61</b></td><td><span class="st warn">! Linked, flagged</span></td></tr><tr><td>E3 ↔ P2</td><td>0.52</td><td>E2</td><td><b>0.19</b></td><td><span class='st no'>✕ Rejected</span></td></tr></tbody></table></div></figure>
+      
+    
+      <p>E2 still wins, but its confidence drops from 0.94 to 0.61 because E3 was a plausible rival. Reporting can then treat contested links differently from clean ones, instead of pretending every match is equally certain.</p>
+      
+    
+      <h3 data-n="05">Who we could suddenly see</h3>
+      
+    
+      <p>Once the links were in place, linked transactions rolled up into one record per customer, including the people loyalty data had never captured.</p>
+      
+    
+      
+      <figure class="fig anim fade-up"><figcaption><div><b>Customers visible, by segment</b> <span class="ill">Illustrative</span></div><span>Thousands of customers; amber = newly visible</span></figcaption><div class="sx"><div class="sx-in" style="--n:5"><div class="cols" style="--h:220px"><div class="col"><span class="cv">310k</span><i style="height:15.04%;background:#00866b" data-tip="Engaged loyalty: 310k" tabindex="0"></i></div><div class="col"><span class="cv">420k</span><i style="height:20.38%;background:#00866b" data-tip="Semi-engaged: 420k" tabindex="0"></i></div><div class="col"><span class="cv">560k</span><i style="height:27.17%;background:#00866b" data-tip="Unengaged loyalty: 560k" tabindex="0"></i></div><div class="col"><span class="cv">1,840k</span><i style="height:89.29%;background:#c97a00" data-tip="Card-only: 1,840k" tabindex="0"></i></div><div class="col"><span class="cv">95k</span><i style="height:4.61%;background:#00866b" data-tip="Fleet: 95k" tabindex="0"></i></div></div><div class="cols-x"><span>Engaged loyalty</span><span>Semi-engaged</span><span>Unengaged loyalty</span><span>Card-only</span><span>Fleet</span></div></div></div><details class="dt"><summary>View data</summary><table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>Engaged loyalty</td><td>310k</td></tr><tr><td>Semi-engaged</td><td>420k</td></tr><tr><td>Unengaged loyalty</td><td>560k</td></tr><tr><td>Card-only</td><td>1,840k</td></tr><tr><td>Fleet</td><td>95k</td></tr></tbody></table></details></figure>
+      
+    
+      <p>The largest group by far was customers who paid by card but never swiped loyalty. They had been shopping with bp all along; the business just couldn't see them.</p>
+      
+    
+      <h3 data-n="06">What I handed over</h3>
+      
+    
+      
+      <div class="callouts"><div class="callout fade-up"><b>The data foundation</b>Raw EPOS, Payment and Loyalty data brought in from each source system, cleaned into one common model per market, with the in-scope population defined for every pair so “unmatchable” never counted as “missed”.</div><div class="callout fade-up"><b>The matching models</b>Blocking keys, similarity scoring, dampening and a 0.7 threshold, tuned per market, producing a customer ID that downstream reporting and models could build on.</div></div>
+      
+    
+
+    <section class="results">
+      <p class="label">Results</p>
+      <div class="tiles"><div class="tile fade-up"><b data-count>38%</b><span>increase in fuel-to-store conversion</span></div><div class="tile fade-up"><b data-count>3 → 1</b><span>datasets joined into one customer view</span></div><div class="tile fade-up"><b data-count>3</b><span>markets on one model: UK, Germany, Poland</span></div><div class="tile fade-up"><b data-count>CLV</b><span>bp&#39;s lifetime-value model was built on SCI</span></div></div>
+    </section>
+  </div>
+</main>
+
+<section class="why">
+  <div class="column">
+    <p class="label">Why this mattered</p>
+    <h2>A customer key, built once and used everywhere</h2>
+    <p>Matching three datasets was never the point. The point was being able to ask customer questions at all: who shops with us, who crosses from the pump to the store, who is drifting away. The cross-shopping insight behind the 38% conversion lift came straight from this view, and the Customer Lifetime Value model that followed was built on top of it.</p>
+    <div class="tiles"><div class="tile fade-up"><b>3</b><span>source systems linked</span></div><div class="tile fade-up"><b>4</b><span>blocking keys narrow every search</span></div><div class="tile fade-up"><b>0.7</b><span>confidence threshold for a link</span></div><div class="tile fade-up"><b>1</b><span>customer ID for reporting and models</span></div></div>
   </div>
 </section>
-
-<section id="approach" class="dark">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <div class="num">02</div>
-      <p class="kicker">The approach</p>
-      <h2>Block, score, dampen, link</h2>
-      <p class="sub">A tolerance-based matching model that says how confident it is in every link it makes.</p>
-    </div>
-    <div class="pipe" data-reveal>
-      <div class="stage"><span class="dot">01</span><b>Refine</b><p>Clean all three sources into one common data model, market by market.</p></div><div class="stage"><span class="dot">02</span><b>Block</b><p>Only compare records from the same site, date, country and basket type.</p></div><div class="stage"><span class="dot">03</span><b>Score</b><p>Cosine similarity across time, value and quantity: 0 at the tolerance edge, 1 for exact.</p></div><div class="stage"><span class="dot">04</span><b>Dampen</b><p>Scale each score by its share of all competing candidates.</p></div><div class="stage"><span class="dot">05</span><b>Link</b><p>Keep the best match above 0.7 and chain EPOS, Payment and Loyalty into one record.</p></div><div class="stage"><span class="dot">06</span><b>Measure</b><p>Roll linked transactions up into customer KPIs, reported with coverage and confidence.</p></div>
-    </div>
-    <div class="extra anim" data-reveal>
-      <p class="fig"><span>Fig. 2 · The confidence score, worked through (illustrative transactions)</span></p>
-      <div class="formula"><div><b>Confidence</b> = Similarity × Dampening</div><div><b>Dampening</b> = Similarity ÷ Σ similarity of all feasible matches</div></div><div class="tbl"><table><thead><tr><th>Pair</th><th>Similarity</th><th>Competing candidate</th><th>Confidence</th><th>Decision</th></tr></thead><tbody><tr><td>E1 ↔ P1</td><td>0.85</td><td>none</td><td><b>0.85</b></td><td><span class="st ok">✓ Linked</span></td></tr><tr><td>E2 ↔ P2</td><td>0.94</td><td>E3</td><td><b>0.61</b></td><td><span class="st warn">! Linked, flagged as contested</span></td></tr><tr><td>E3 ↔ P2</td><td>0.52</td><td>E2</td><td><b>0.19</b></td><td><span class='st no'>✕ Rejected</span></td></tr></tbody></table></div>
-    </div>
-  </div>
-</section>
-
-<section id="role">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <div class="num">03</div>
-      <p class="kicker">My contribution</p>
-      <h2>What I owned, end to end</h2>
-      <p class="sub">Senior Data Analyst, Dataworx AI. I owned the path from raw source data to a linked, scored customer view.</p>
-    </div>
-    <div class="contrib">
-      
-      <div class="ccard" data-reveal style="transition-delay:0.0s"><span class="idx">01</span><div class="lab">Sourcing</div><h3>Brought the raw data in</h3><p>Pulled raw EPOS, Loyalty and Payment data from each source system, per market.</p>
-        <div class="chips"><span>Till baskets</span><span>Loyalty swipes</span><span>Card payments</span></div></div>
-      
-      <div class="ccard" data-reveal style="transition-delay:0.1s"><span class="idx">02</span><div class="lab">Modelling</div><h3>Built the common data model</h3><p>Cleaned and standardised all three sources so they could be compared like for like.</p>
-        <div class="chips"><span>Refine layer</span><span>Market-specific tolerances</span><span>Scope definitions</span></div></div>
-      
-      <div class="ccard" data-reveal style="transition-delay:0.2s"><span class="idx">03</span><div class="lab">Matching</div><h3>Built the matching models</h3><p>Wrote the statistical models that find approximate matches and score every link.</p>
-        <div class="chips"><span>Blocking keys</span><span>Similarity + dampening</span><span>0.7 threshold</span></div></div>
-      
-    </div>
-  </div>
-</section>
-
-<section id="output" class="grid-bg">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <div class="num">04</div>
-      <p class="kicker">The output</p>
-      <h2>A linked customer base you can size, segment and trust</h2>
-      <p class="sub">A recreation of the finished product with fictitious data. Hover or tap any bar or point for its value.</p>
-    </div>
-    <div class="dash" data-reveal>
-      <aside class="side">
-        <div class="lights"><i></i><i></i><i></i></div>
-        <div class="app">Single Customer Identifier</div>
-        <a href="#panel-1" class="on">Link rate by dataset pair</a><a href="#panel-2" class="">Coverage vs. confidence threshold</a><a href="#panel-3" class="">Customers now visible, by segment</a>
-        <div class="foot-note">DATA: ILLUSTRATIVE<br>REFRESH: MONTHLY</div>
-      </aside>
-      <div class="main">
-        <div class="topbar"><span class="t">Overview</span><span class="pill">Period: last 12 months ▾</span><span class="pill">Scope: all ▾</span><span class="pill live">● Illustrative data</span></div>
-        <div class="panels">
-          
-          <div id="panel-1" class="card anim"><h3>Link rate by dataset pair</h3><p class="csub">% of in-scope transactions linked</p><div class="legend"><span><i style="background:#00866b"></i>Exact-key match</span><span><i style="background:#c97a00"></i>Confidence-scored match</span></div><div class="hb"><div class="hb-row"><span class="hb-l">EPOS ↔ Payment</span><span class="hb-t stack"><i style="width:58.00%;background:#00866b" data-tip="EPOS ↔ Payment, Exact-key match: 58%" tabindex="0"></i><i style="width:24.00%;background:#c97a00" data-tip="EPOS ↔ Payment, Confidence-scored match: 24%" tabindex="0"></i></span><span class="hb-v">82%</span></div><div class="hb-row"><span class="hb-l">EPOS ↔ Loyalty</span><span class="hb-t stack"><i style="width:71.00%;background:#00866b" data-tip="EPOS ↔ Loyalty, Exact-key match: 71%" tabindex="0"></i><i style="width:17.00%;background:#c97a00" data-tip="EPOS ↔ Loyalty, Confidence-scored match: 17%" tabindex="0"></i></span><span class="hb-v">88%</span></div><div class="hb-row"><span class="hb-l">Payment ↔ Loyalty</span><span class="hb-t stack"><i style="width:44.00%;background:#00866b" data-tip="Payment ↔ Loyalty, Exact-key match: 44%" tabindex="0"></i><i style="width:21.00%;background:#c97a00" data-tip="Payment ↔ Loyalty, Confidence-scored match: 21%" tabindex="0"></i></span><span class="hb-v">65%</span></div></div><details class="dt"><summary>View data</summary><table><thead><tr><th>Item</th><th>Exact-key match</th><th>Confidence-scored match</th><th>Total</th></tr></thead><tbody><tr><td>EPOS ↔ Payment</td><td>58%</td><td>24%</td><td>82%</td></tr><tr><td>EPOS ↔ Loyalty</td><td>71%</td><td>17%</td><td>88%</td></tr><tr><td>Payment ↔ Loyalty</td><td>44%</td><td>21%</td><td>65%</td></tr></tbody></table></details></div>
-          
-          <div id="panel-2" class="card anim"><h3>Coverage vs. confidence threshold</h3><p class="csub">% of in-scope transactions retained</p><div class="lc" style="--h:240px"><div class="plot"><div class="gl" style="bottom:0.00%"><span>40%</span></div><div class="gl" style="bottom:20.00%"><span>50%</span></div><div class="gl" style="bottom:40.00%"><span>60%</span></div><div class="gl" style="bottom:60.00%"><span>70%</span></div><div class="gl" style="bottom:80.00%"><span>80%</span></div><div class="gl" style="bottom:100.00%"><span>90%</span></div><div class="vl" style="left:44.44%"><span>Chosen: 0.7</span></div><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline fill="none" stroke="#00866b" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round" points="0.00,11.80 11.11,12.40 22.22,13.00 33.33,14.00 44.44,15.60 55.56,19.20 66.67,27.00 77.78,39.40 88.89,58.00 100.00,91.60"/></svg><i class="dot" style="left:0.00%;bottom:88.20%;background:#00866b" data-tip="0.5: 84.1%" tabindex="0"></i><i class="dot" style="left:11.11%;bottom:87.60%;background:#00866b" data-tip="0.55: 83.8%" tabindex="0"></i><i class="dot" style="left:22.22%;bottom:87.00%;background:#00866b" data-tip="0.6: 83.5%" tabindex="0"></i><i class="dot" style="left:33.33%;bottom:86.00%;background:#00866b" data-tip="0.65: 83.0%" tabindex="0"></i><i class="dot" style="left:44.44%;bottom:84.40%;background:#00866b" data-tip="0.7: 82.2%" tabindex="0"></i><i class="dot" style="left:55.56%;bottom:80.80%;background:#00866b" data-tip="0.75: 80.4%" tabindex="0"></i><i class="dot" style="left:66.67%;bottom:73.00%;background:#00866b" data-tip="0.8: 76.5%" tabindex="0"></i><i class="dot" style="left:77.78%;bottom:60.60%;background:#00866b" data-tip="0.85: 70.3%" tabindex="0"></i><i class="dot" style="left:88.89%;bottom:42.00%;background:#00866b" data-tip="0.9: 61.0%" tabindex="0"></i><i class="dot" style="left:100.00%;bottom:8.40%;background:#00866b" data-tip="0.95: 44.2%" tabindex="0"></i><span class="xl" style="left:0.00%">0.5</span><span class="xl" style="left:22.22%">0.6</span><span class="xl" style="left:44.44%">0.7</span><span class="xl" style="left:66.67%">0.8</span><span class="xl" style="left:88.89%">0.9</span><span class="xl" style="left:100.00%">0.95</span></div></div><details class="dt"><summary>View data</summary><table><thead><tr><th></th><th>Coverage</th></tr></thead><tbody><tr><td>0.5</td><td>84.1%</td></tr><tr><td>0.55</td><td>83.8%</td></tr><tr><td>0.6</td><td>83.5%</td></tr><tr><td>0.65</td><td>83.0%</td></tr><tr><td>0.7</td><td>82.2%</td></tr><tr><td>0.75</td><td>80.4%</td></tr><tr><td>0.8</td><td>76.5%</td></tr><tr><td>0.85</td><td>70.3%</td></tr><tr><td>0.9</td><td>61.0%</td></tr><tr><td>0.95</td><td>44.2%</td></tr></tbody></table></details></div>
-          
-          <div id="panel-3" class="card anim wide"><h3>Customers now visible, by segment</h3><p class="csub">Thousands of customers; amber = newly visible</p><div class="sx"><div class="sx-in" style="--n:5"><div class="cols" style="--h:220px"><div class="col"><span class="cv">310k</span><i style="height:15.04%;background:#00866b" data-tip="Engaged loyalty: 310k" tabindex="0"></i></div><div class="col"><span class="cv">420k</span><i style="height:20.38%;background:#00866b" data-tip="Semi-engaged: 420k" tabindex="0"></i></div><div class="col"><span class="cv">560k</span><i style="height:27.17%;background:#00866b" data-tip="Unengaged loyalty: 560k" tabindex="0"></i></div><div class="col"><span class="cv">1,840k</span><i style="height:89.29%;background:#c97a00" data-tip="Card-only (non-loyalty): 1,840k" tabindex="0"></i></div><div class="col"><span class="cv">95k</span><i style="height:4.61%;background:#00866b" data-tip="Fleet: 95k" tabindex="0"></i></div></div><div class="cols-x"><span>Engaged loyalty</span><span>Semi-engaged</span><span>Unengaged loyalty</span><span>Card-only (non-loyalty)</span><span>Fleet</span></div></div></div><details class="dt"><summary>View data</summary><table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>Engaged loyalty</td><td>310k</td></tr><tr><td>Semi-engaged</td><td>420k</td></tr><tr><td>Unengaged loyalty</td><td>560k</td></tr><tr><td>Card-only (non-loyalty)</td><td>1,840k</td></tr><tr><td>Fleet</td><td>95k</td></tr></tbody></table></details></div>
-          
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="impact" class="dark">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <div class="num">05</div>
-      <p class="kicker">Impact</p>
-      <h2>What changed</h2>
-      <p class="sub">Reported results, and how the way the business worked changed.</p>
-    </div>
-    <div class="impact" data-reveal>
-      <div class="icard"><div class="m" data-count>38%</div><div class="l">fuel-to-store conversion</div><div class="d">Cross-shopping insight from the unified view powered targeted promotions.</div></div><div class="icard"><div class="m" data-count>3 → 1</div><div class="l">customer view</div><div class="d">EPOS, Loyalty and Payment joined into one record per customer.</div></div><div class="icard"><div class="m" data-count>3 markets</div><div class="l">on one model</div><div class="d">UK, Germany and Poland on the same layered model, tuned per market.</div></div><div class="icard"><div class="m" data-count>1 source</div><div class="l">of customer truth</div><div class="d">bp&#39;s Customer Lifetime Value model was built on SCI.</div></div>
-    </div>
-    <div class="ba">
-      <div class="ba-row head"><span></span><span>Before</span><span></span><span>After</span></div>
-      
-      <div class="ba-row" data-reveal><span class="k">View of the customer</span><span class="b">Loyalty members only</span><span class="ar">→</span><span class="a">Loyalty and non-loyalty, linked by card token</span></div>
-      
-      <div class="ba-row" data-reveal><span class="k">Trust in a match</span><span class="b">Not measured</span><span class="ar">→</span><span class="a">Every link carries a 0–1 confidence score</span></div>
-      
-      <div class="ba-row" data-reveal><span class="k">Unmatched records</span><span class="b">Looked like failures</span><span class="ar">→</span><span class="a">Scope vs. coverage separates unmatchable from missed</span></div>
-      
-      <div class="ba-row" data-reveal><span class="k">New market</span><span class="b">Rebuild from scratch</span><span class="ar">→</span><span class="a">Same layered model, tuned per market</span></div>
-      
-    </div>
-    <p class="closing" data-reveal>From “we know our loyalty members” to “we know our customers, and how sure we are of every link.”</p>
-  </div>
-</section>
-
-<div class="more">
-  <div class="wrap">
-    <div><h2>Want the full story?</h2><p>The written case study covers the constraints, a worked example and the trade-offs.</p></div>
-    <div class="btns">
-      <a class="btn primary" href="story.html">Read the case study →</a>
-      <a class="btn" href="technical.html">Technical deep dive</a>
-      <a class="btn" href="https://agnidas31.github.io/Agnivesh-Das/#work">Back to portfolio</a>
-    </div>
-  </div>
-</div>
-<div class="foot">
-  <div class="wrap">
-    <span>Agnivesh Das · <a href="https://agnidas31.github.io/Agnivesh-Das/">Portfolio</a> · <a href="https://www.linkedin.com/in/agnivesh-das/">LinkedIn</a></span>
-    <span>Illustrative figures throughout; confidential details omitted.</span>
-  </div>
-</div>
+<div class="foot"><div class="widecol">
+  <span>Agnivesh Das · <a href="https://agnidas31.github.io/Agnivesh-Das/">Portfolio</a> · <a href="https://www.linkedin.com/in/agnivesh-das/">LinkedIn</a> · <a href="technical.html">Technical deep dive</a></span>
+  <span>Illustrative example; figures and details altered.</span>
+</div></div>
 <script>
   (function () {
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var bar = document.getElementById('progress');
-    addEventListener('scroll', function () {
-      var h = document.documentElement; bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
-    }, { passive: true });
-
-    // Reveal on scroll (sections, cards, chart entrances).
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('[data-reveal], .anim').forEach(function (el) { io.observe(el); });
-
-    // Active section in the nav.
-    var links = {}; document.querySelectorAll('.nav .sec a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
-    var so = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting && links[e.target.id]) {
-        Object.values(links).forEach(function (a) { a.classList.remove('on'); }); links[e.target.id].classList.add('on'); } });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    document.querySelectorAll('section[id]').forEach(function (s) { so.observe(s); });
-
-    // Count-up for single-number headline metrics ("38%", "$8M", "4×"); others stay as written.
+    addEventListener('scroll', function () { var h = document.documentElement; bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%'; }, { passive: true });
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.2 });
+    document.querySelectorAll('.anim, .fade-up').forEach(function (el) { io.observe(el); });
     function countUp(el) {
-      var m = el.textContent.trim().match(/^([^\d]*)(\d+(?:\.\d+)?)([^\d]*)$/);
-      if (!m || reduce) return;
+      var m = el.textContent.trim().match(/^([^\d]*)(\d+(?:\.\d+)?)([^\d]*)$/); if (!m || reduce) return;
       var end = parseFloat(m[2]), dec = (m[2].split('.')[1] || '').length, t0 = null;
-      function step(t) { if (!t0) t0 = t; var p = Math.min((t - t0) / 1200, 1), e = 1 - Math.pow(1 - p, 3);
-        el.textContent = m[1] + (end * e).toFixed(dec) + m[3]; if (p < 1) requestAnimationFrame(step); }
+      function step(t) { if (!t0) t0 = t; var p = Math.min((t - t0) / 1100, 1), e = 1 - Math.pow(1 - p, 3); el.textContent = m[1] + (end * e).toFixed(dec) + m[3]; if (p < 1) requestAnimationFrame(step); }
       requestAnimationFrame(step);
     }
-    var co = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); co.unobserve(e.target); } });
-    }, { threshold: 0.6 });
+    var co = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); co.unobserve(e.target); } }); }, { threshold: 0.6 });
     document.querySelectorAll('[data-count]').forEach(function (el) { co.observe(el); });
-
-    // Tooltips on every chart mark.
     var tip = document.getElementById('tip');
-    function show(el) {
-      tip.textContent = el.getAttribute('data-tip');
-      var r = el.getBoundingClientRect(), w = tip.offsetWidth;
-      var x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8);
-      var y = r.top - tip.offsetHeight - 8; if (y < 8) y = r.bottom + 8;
-      tip.style.left = x + 'px'; tip.style.top = y + 'px'; tip.style.opacity = 1;
-    }
+    function show(el) { tip.textContent = el.getAttribute('data-tip'); var r = el.getBoundingClientRect(), w = tip.offsetWidth;
+      tip.style.left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8) + 'px';
+      var y = r.top - tip.offsetHeight - 8; tip.style.top = (y < 8 ? r.bottom + 8 : y) + 'px'; tip.style.opacity = 1; }
     function hide() { tip.style.opacity = 0; }
     document.querySelectorAll('[data-tip]').forEach(function (el) {
-      el.addEventListener('mouseenter', function () { show(el); });
-      el.addEventListener('focus', function () { show(el); });
-      el.addEventListener('click', function () { show(el); });
-      el.addEventListener('mouseleave', hide); el.addEventListener('blur', hide);
-    });
+      ['mouseenter', 'focus', 'click'].forEach(function (ev) { el.addEventListener(ev, function () { show(el); }); });
+      el.addEventListener('mouseleave', hide); el.addEventListener('blur', hide); });
     addEventListener('scroll', hide, { passive: true });
   })();
 </script>
