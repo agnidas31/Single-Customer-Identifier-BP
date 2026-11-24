@@ -75,7 +75,7 @@
   .callout b { display: block; font: 600 16px var(--display); color: var(--ink); margin-bottom: 6px; }
 
   /* results + why */
-  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 22px 0 0; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 22px 0 0; }
   .tile { background: var(--card); border: 1px solid var(--rule); border-radius: 14px; padding: 20px 18px; }
   .tile b { display: block; font: 700 clamp(30px, 3.4vw, 40px)/1 var(--display); letter-spacing: -.03em; color: var(--em); }
   .tile span { display: block; font-size: 14px; line-height: 1.45; color: var(--muted); margin-top: 10px; }
